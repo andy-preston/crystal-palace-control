@@ -1,7 +1,6 @@
-; parameters @0 - chip, @1 - register, @2 - value
-
     .include "../lib/mcp23s17.inc"
 
+; parameters @0 - chip, @1 - register, @2 - register to recieve value
 .MACRO mcp23s17Read
     chipSelectI @0
     spiOutI OP_READ
@@ -10,6 +9,7 @@
     chipDeselect
 .ENDMACRO
 
+; parameters @0 - chip, @1 - register, @2 - value
 .MACRO mcp23s17Write
     chipSelectI @0
     spiOutI OP_WRITE
