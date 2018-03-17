@@ -15,9 +15,13 @@
 ; PA7 ;          ; C        ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-.MACRO chipSelect
+.MACRO chipSelectR
+    OUT PORTA, @0
+.ENDMACRO
+
+.MACRO chipSelectI
     LDI r24, @0
-    OUT PORTA, r24
+    chipSelectR r24
 .ENDMACRO
 
 .MACRO setupChipSelect
