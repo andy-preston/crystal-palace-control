@@ -1,5 +1,7 @@
 ; parameters @0 - chip, @1 - register, @2 - value
 
+    .include "../lib/mcp23s17.inc"
+
 .MACRO mcp23s17Read
     chipSelectI @0
     spiOutI OP_READ
