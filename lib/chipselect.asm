@@ -24,6 +24,11 @@
     chipSelectR r24
 .ENDMACRO
 
+.MACRO chipDeselect
+    LDI r24, 0
+    chipSelectR r24
+.ENDMACRO
+
 .MACRO setupChipSelect
     LDI r24, 0b11111111 ; All outputs
     OUT DDRA, r24
