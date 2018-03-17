@@ -10,12 +10,14 @@
     .org 0x0046
 progStart:
     setupBlink
+seqStart:
+    LDI r22, 0x20
 loop:
     blink
     ; simple delay loop
     ; I've only just started with AVR Assembler
     ; I'm not ready for timers just yet
-    LDI r23, 0x10
+    MOV r23, r22
 delay:
     LDI r24, 0xFF
 outerDelay:
@@ -28,4 +30,6 @@ innerDelay:
     DEC r23
     BRNE delay
 
-    RJMP loop
+    DEC r22
+    BRNE loop
+    RJMP seqStart
