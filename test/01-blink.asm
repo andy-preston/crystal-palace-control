@@ -1,6 +1,4 @@
-    .nolist
-    .include "/usr/local/share/avra/m1284Pdef.inc"
-    .list
+    .device ATmega1284P
 
     .include "../lib/blink.asm"
 
