@@ -1,12 +1,12 @@
     .device ATmega1284P
 
-    .include "../lib/blink.asm"
-    .include "./util/delay.asm"
-
     .org 0x0000   ; reset vector
     RJMP progStart
 
     .org 0x0046
+    .include "../lib/blink.asm"
+    .include "./util/delay.asm"
+
 progStart:
     setupBlink
 seqStart:
