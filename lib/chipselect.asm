@@ -6,6 +6,7 @@
 ; but it only works with 0001 - 1111 for each nybble
 ; because the enable pin has to be on for any change
 ;
+; This is how the current chip select is set up:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; AVR ; 74138(0) ; 74138(1) ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -20,24 +21,55 @@
 ; PA7 ;          ; C        ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-.MACRO chipSelectR
+; It needs to be remoddled to this:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; AVR ; 74138(0) ; 74138(1) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; PA0 ; A        ;          ;
+; PA1 ; B        ;          ;
+; PA2 ; C        ;          ;
+; PA3 ;          ; A        ;
+; PA4 ;          ; B        ;
+; PA5 ;          ; C        ;
+; PA6 ;          ; Enable   ;
+; PA7 ; Enable   ;          ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+.MACRO csPortR
     OUT PORTA, @0
 .ENDMACRO
 
-.MACRO chipSelectI
+.MACRO csPortI
     LDI r24, @0
     chipSelectR r24
 .ENDMACRO
 
 .MACRO chipDeselect
-    LDI r24, 0
-    chipSelectR r24
+    csPortI 0
 .ENDMACRO
 
 .MACRO setupChipSelect
     LDI r24, 0b11111111 ; All outputs
     OUT DDRA, r24
-
     LDI r24, 0b00000000 ; All off
     OUT PORTB, r24
 .ENDMACRO
+
+chipSelectR:
+    PUSH r24 ; chip select value 0-15
+    CP r24, 0x08
+    BRLO lowchip
+
+    LSL r24 ; if it's 8 or higher shift the lower 3 bits up into the higher
+    LSL r24 ; nybble. Which has the side effect of shifting the 8 bit into
+    LSL r24 ; the lower chip enable bit (which enables the HIGH chip)
+    RJMP skipLowChip
+
+lowchip:
+    ORI r24, 0b10000000 ; set the higher enable bit (which enables the LOW chip)
+
+skipLowChip:
+    csPortR r24
+
+    POP r24
+    RET
