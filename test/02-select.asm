@@ -12,12 +12,14 @@
 progStart:
     setupBlink
     setupChipSelect
-    LDI r22, 0
+resetOutput:
+    LDI r22, 0b000001
 loop:
     blink
     chipSelectR r22
-    INC r22
 
+    LSL r22 ; shift to next output pin
+    BREQ resetOutput ; if it's all zeros, restart at 1
     ; simple delay loop
     ; I've only just started with AVR Assembler
     ; I'm not ready for timers just yet
@@ -34,4 +36,4 @@ innerDelay:
     DEC r23
     BRNE delay
 
-    RJMP loop
+    RJMP loop ; otherwise skip on to the next blip
