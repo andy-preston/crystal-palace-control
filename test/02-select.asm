@@ -9,6 +9,7 @@
     .include "./util/delay.asm"
 
 progStart:
+    CLI
     setupBlink
     setupChipSelect
 resetOutput:

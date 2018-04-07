@@ -8,6 +8,7 @@
     .include "./util/delay.asm"
 
 progStart:
+    CLI
     setupBlink
 seqStart:
     LDI r22, 0x20
