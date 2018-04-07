@@ -1,4 +1,4 @@
-    .device ATmega1284P
+    .device ATmega324P
 
     .org 0x0000   ; reset vector
     JMP progStart
