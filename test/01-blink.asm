@@ -1,7 +1,7 @@
     .device ATmega324P
 
     .org 0x0000   ; reset vector
-    RJMP progStart
+    JMP progStart
 
     .org 0x003E
     .include "../lib/blink.asm"
