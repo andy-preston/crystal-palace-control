@@ -21,7 +21,3 @@ http://www.avr-asm-tutorial.net/gavrasm/index_en.html
 # Program
 
     avrdude -B10 -c usbasp-clone -p m324p -U flash:w:test.hex
-
-# My Fuse Settings
-
-    avrdude -c usbasp-clone -p m1284p -U lfuse:w:0xff:m -U hfuse:w:0xd6:m -U efuse:w:0xff:m
