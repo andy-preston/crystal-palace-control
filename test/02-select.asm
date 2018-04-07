@@ -5,11 +5,13 @@
 
     .org 0x003E
     .include "../lib/blink.asm"
+    .include "../lib/stack.asm"
     .include "../lib/chipselect.asm"
     .include "./util/delay.asm"
 
 progStart:
     CLI
+    setupStack
     setupBlink
     setupChipSelect
 resetOutput:
