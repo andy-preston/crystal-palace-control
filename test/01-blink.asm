@@ -3,7 +3,7 @@
     .org 0x0000   ; reset vector
     RJMP progStart
 
-    .org 0x0046
+    .org 0x003E
     .include "../lib/blink.asm"
     .include "./util/delay.asm"
 
