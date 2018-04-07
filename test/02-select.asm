@@ -13,13 +13,14 @@ progStart:
     setupBlink
     setupChipSelect
 resetOutput:
-    LDI r22, 0b000001
+    LDI r26, 0
 loop:
     blink
-    csPortR r22
+    CALL chipSelect
     delayLoopI 0x20
 
-    LSL r22 ; shift to next output pin
-    BREQ resetOutput ; if it's all zeros, restart at 1
+    INC r26
+    CPI r26, 0b00001000
+    BREQ resetOutput
 
     RJMP loop ; otherwise skip on to the next blip

@@ -55,21 +55,21 @@
     OUT PORTB, r24
 .ENDMACRO
 
-chipSelectR:
-    PUSH r24 ; chip select value 0-15
-    CP r24, 0x08
+chipSelect:
+    PUSH r26 ; chip select value 0-15
+    CPI r26, 0x08
     BRLO lowchip
 
-    LSL r24 ; if it's 8 or higher shift the lower 3 bits up into the higher
-    LSL r24 ; nybble. Which has the side effect of shifting the 8 bit into
-    LSL r24 ; the lower chip enable bit (which enables the HIGH chip)
+    LSL r26 ; if it's 8 or higher shift the lower 3 bits up into the higher
+    LSL r26 ; nybble. Which has the side effect of shifting the 8 bit into
+    LSL r26 ; the lower chip enable bit (which enables the HIGH chip)
     RJMP skipLowChip
 
 lowchip:
-    ORI r24, 0b10000000 ; set the higher enable bit (which enables the LOW chip)
+    ORI r26, 0b10000000 ; set the higher enable bit (which enables the LOW chip)
 
 skipLowChip:
-    csPortR r24
+    csPortR r26
 
-    POP r24
+    POP r26
     RET
