@@ -1,4 +1,6 @@
-    .device ATmega1284P
+    .device ATmega324P
+    .EQU RKAT=1
+    ;.EQU RKAT=0
 
     .org 0x0000   ; reset vector
     RJMP progStart
