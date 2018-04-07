@@ -39,13 +39,9 @@
     OUT PORTA, @0
 .ENDMACRO
 
-.MACRO csPortI
-    LDI r24, @0
-    chipSelectR r24
-.ENDMACRO
-
 .MACRO chipDeselect
-    csPortI 0
+    LDI r24, 0
+    csPortR r24
 .ENDMACRO
 
 .MACRO setupChipSelect
