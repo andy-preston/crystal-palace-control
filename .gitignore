@@ -1,5 +1,7 @@
 *.hex
 *.lst
 *~
-Atmel-42743-ATmega324P_Datasheet.pdf
+4digitLED.pdf
 Atmel-0856-AVR-Instruction-Set-Manual.pdf
+Atmel-42743-ATmega324P_Datasheet.pdf
+COM-09622-MAX7219-MAX7221.pdf
