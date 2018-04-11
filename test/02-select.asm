@@ -22,7 +22,7 @@ loop:
     delayLoopI 0x20
 
     INC r26
-    CPI r26, 0b00001000
+    CPI r26, 16 ; chip select goes from 0-15
     BREQ resetOutput
 
     RJMP loop ; otherwise skip on to the next blip
