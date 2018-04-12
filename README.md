@@ -16,7 +16,7 @@ http://www.avr-asm-tutorial.net/gavrasm/index_en.html
 
 # Assemble
 
-    ~/bin/gavrasm test.asm
+    ~/bin/gavrasm -M test.asm
 
 # Program
 
