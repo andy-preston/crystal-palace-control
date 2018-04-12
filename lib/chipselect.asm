@@ -1,27 +1,6 @@
 ; Chip select for the SPI bus is controlled by a pair
 ; of 74HCT138 3-Line to 8-Line Decoder/Demultiplexers
 ;
-; In the initial PORTA test,
-; we've just been bunging numbers at the chip select
-; but it only works with 0001 - 1111 for each nybble
-; because the enable pin has to be on for any change
-;
-; This is how the current chip select is set up:
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; AVR ; 74138(0) ; 74138(1) ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; PA0 ; Enable   ;          ;
-; PA1 ; A        ;          ;
-; PA2 ; B        ;          ;
-; PA3 ; C        ;          ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; PA4 ;          ; Enable   ;
-; PA5 ;          ; A        ;
-; PA6 ;          ; B        ;
-; PA7 ;          ; C        ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; It needs to be remoddled to this:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; AVR ; 74138(0) ; 74138(1) ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
