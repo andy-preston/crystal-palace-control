@@ -19,7 +19,11 @@ resetOutput:
 loop:
     blink
     CALL chipSelect
-    delayLoopI 0x20
+    delayLoopI 0x10
+
+    blink
+    chipDeselect
+    delayLoopI 0x10
 
     INC r26
     CPI r26, 16 ; chip select goes from 0-15
