@@ -1,50 +1,34 @@
 .MACRO setupSpi
     ; Prevent SlaveSelect acting as an input or it'll force SPI into slave mode
-    IN r24, DDRB
-    ORI r24, 0b00010000 ; PB4 = output
-    OUT DDRB, r24
+    IN portReg, DDRB
+    ORI portReg, 0b00010000 ; PB4 = output
+    OUT DDRB, portReg
 
-    IN r24, PORTB
-    ANDI r24, 0b00010000 ; PB4 = high
-    OUT PORTB, r24
+    IN portReg, PORTB
+    ANDI portReg, 0b00010000 ; PB4 = high
+    OUT PORTB, portReg
 
     ; Enable SPI
-    IN r24, SPCR
-    ORI r24, ((1 << SPE) | (1 << MSTR) | (1 << SPR0))
-    OUT SPCR, r24
+    IN portReg, SPCR0
+    ORI portReg, ((1 << SPE0) | (1 << MSTR0) | (1 << SPR00))
+    OUT SPCR0, portReg
 
     ; Setup SCK and MOSI pins AFTER enabling SPI, to avoid
     ; accidentally clocking in a single bit
-    IN r24, DDRB
-    ORI r24, 0b10100000 ; PB7(SCK) PB5(MOSI) = output
-    OUT DDRB, r24
+    IN portReg, DDRB
+    ORI portReg, 0b10100000 ; PB7(SCK) PB5(MOSI) = output
+    OUT DDRB, portReg
 .ENDMACRO
 
-; parameter @0 - register to output
-.MACRO spiOutR
-    OUT SPDR, @0
+.MACRO spiOut
+    OUT SPDR0, spiReg
 spiOutWait:
-    ; wait for SPIF bit in SPSR to be set
-    IN @0, SPSR
-    ANDI @0, 0b10000000 ; SPIF
+    IN spiReg, SPSR0
+    ANDI spiReg, (1 << SPIF0)
     BREQ spiOutWait
 .ENDMACRO
 
-; parameter @0 - value to output
-.MACRO spiOutI
-    LDI r24, @0
-    spiOutR r24
+.MACRO spiOutIn
+    spiOut
+    IN SPDR0, spiReg
 .ENDMACRO
-
-; parameters @0 - register to output @1 - register to recieve input
-.MACRO spiOutInR
-    spiOutR @0
-    IN SPDR, @1
-.ENDMACRO
-
-; parameters @0 - value to output @1 - register to recieve input
-.MACRO spiOutInI
-    LDI r24, @0
-    spiInR r24 @1
-.ENDMACRO
-
