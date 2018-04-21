@@ -14,37 +14,34 @@
 ; PA7 ; Enable   ;          ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-.MACRO csPortR
-    OUT PORTA, @0
-.ENDMACRO
+; device names mapped to chip select pins
+.EQU selectMax7221 = 0
 
 .MACRO chipDeselect
-    LDI r24, 0
-    csPortR r24
+    LDI portReg, 0
+    OUT PORTA, portReg
 .ENDMACRO
 
 .MACRO setupChipSelect
-    LDI r24, 0b11111111 ; All outputs
-    OUT DDRA, r24
-    LDI r24, 0b00000000 ; All off
-    OUT PORTB, r24
+    LDI portReg, 0b11111111 ; All outputs
+    OUT DDRA, portReg
+    LDI portReg, 0b00000000 ; All off
+    OUT PORTB, portReg
 .ENDMACRO
 
 chipSelect:
-    PUSH r26 ; chip select value 0-15
-    CPI r26, 0x08
+    MOV portReg, selectReg ; chip select value 0-15
+    CPI selectReg, 0x08
     BRLO lowchip
 
-    LSL r26 ; if it's 8 or higher shift the lower 3 bits up into the higher
-    LSL r26 ; nybble. Which has the side effect of shifting the 8 bit into
-    LSL r26 ; the lower chip enable bit (which enables the HIGH chip)
+    LSL portReg ; if it's 8 or higher shift the lower 3 bits up into the higher
+    LSL portReg ; nybble. Which has the side effect of shifting the 8 bit into
+    LSL portReg ; the lower chip enable bit (which enables the HIGH chip)
     RJMP skipLowChip
 
 lowchip:
-    ORI r26, 0b10000000 ; set the higher enable bit (which enables the LOW chip)
+    ORI portReg, 0b10000000 ; set the higher enable bit (which enables the LOW chip)
 
 skipLowChip:
-    csPortR r26
-
-    POP r26
+    OUT PORTA, portReg
     RET

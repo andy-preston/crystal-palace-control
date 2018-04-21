@@ -4,8 +4,9 @@
     JMP progStart
 
     .org 0x003E
-    .include "../lib/blink.asm"
+    .include "../lib/registers.asm"
     .include "../lib/stack.asm"
+    .include "../lib/blink.asm"
     .include "../lib/chipselect.asm"
     .include "./util/delay.asm"
 
