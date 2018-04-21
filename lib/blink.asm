@@ -1,16 +1,16 @@
-.MACRO  blink
-    IN r24, PORTB
-    LDI r25, 0b00000001
-    EOR r24, r25
-    OUT PORTB, r24
+.MACRO blink
+    IN portReg, PORTB
+    LDI quickReg, 0b00000001
+    EOR portReg, quickReg
+    OUT PORTB, portReg
 .ENDMACRO
 
 .MACRO setupBlink
-    IN r24, DDRB
-    ORI r24, 0b00000001
-    OUT DDRB, r24
+    IN portReg, DDRB
+    ORI portReg, 0b00000001
+    OUT DDRB, portReg
 
-    IN r24, PORTB
-    ORI r24, 0b00000001
-    OUT PORTB, r24
+    IN portReg, PORTB
+    ORI portReg, 0b00000001
+    OUT PORTB, portReg
 .ENDMACRO
