@@ -15,13 +15,6 @@
 .EQU Max7221RegisterShutdown=0x0C
 .EQU Max7221RegisterDisplayTest=0x0F
 
-.EQU Max7221BcdMinus=0x0A
-.EQU Max7221BcdE=0x0B
-.EQU Max7221BcdH=0x0C
-.EQU Max7221BcdL=0x0D
-.EQU Max7221BcdP=0x0E
-.EQU Max7221BcdBlank=0x0F
-
 .MACRO max7221SetRegister
     LDI selectReg, selectMax7221
     CALL chipSelect
@@ -33,7 +26,7 @@
 .ENDMACRO
 
 .MACRO max7221Clear
-    LDI valReg, Max7221CharBlank
+    LDI valReg, 0
     LDI regReg, 1;
 max7221ClearLoop:
     max7221SetRegister
@@ -48,21 +41,25 @@ max7221ClearLoop:
     max7221SetRegister
 .ENDMACRO
 
-.MACRO max7221BcdMode
-    LDI regReg, Max7221RegisterDecodeMode
-    LDI valReg, 0xF
-    max7221SetRegister
-.ENDMACRO
-
 .MACRO setupMax7221
     LDI regReg, Max7221RegisterScanLimit
-    LDI valReg, 8 ; number of digits on display
+    LDI valReg, 7 ; display 8 digits
     max7221SetRegister
-    LDI regReg, Max7221RegisterIntensity
-    LDI valReg, 0xF
-    max7221SetRegister
+
     LDI regReg, Max7221RegisterShutdown
     LDI valReg, 1 ; shutdown mode = 0
     max7221SetRegister
+
+    LDI valReg, 0
+
+    LDI regReg, Max7221RegisterIntensity
+    max7221SetRegister
+
+    LDI regReg, Max7221RegisterDecodeMode
+    max7221SetRegister
+
+    LDI regReg, Max7221RegisterDisplayTest
+    max7221SetRegister
+
     max7221Clear
 .ENDMACRO

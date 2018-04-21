@@ -16,7 +16,7 @@ progStart:
     setupBlink
     setupChipSelect
 resetOutput:
-    LDI r26, 0
+    LDI selectReg, 0
 loop:
     blink
     CALL chipSelect
@@ -26,8 +26,8 @@ loop:
     chipDeselect
     delayLoopI 0x10
 
-    INC r26
-    CPI r26, 16 ; chip select goes from 0-15
+    INC selectReg
+    CPI selectReg, 16 ; chip select goes from 0-15
     BREQ resetOutput
 
     RJMP loop ; otherwise skip on to the next blip

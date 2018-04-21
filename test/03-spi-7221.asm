@@ -20,9 +20,39 @@ progStart:
     setupSpi
     setupMax7221
 
-    max7221Test
+    LDI regReg, Max7221RegisterDigit0
+    LDI valReg, 0
+    max7221SetRegister
+    LDI regReg, Max7221RegisterDigit1
+    LDI valReg, 1
+    max7221SetRegister
+    LDI regReg, Max7221RegisterDigit2
+    LDI valReg, 2
+    max7221SetRegister
+    LDI regReg, Max7221RegisterDigit3
+    LDI valReg, 3
+    max7221SetRegister
+    LDI regReg, Max7221RegisterDigit4
+    LDI valReg, 4
+    max7221SetRegister
+    LDI regReg, Max7221RegisterDigit5
+    LDI valReg, 5
+    max7221SetRegister
+    LDI regReg, Max7221RegisterDigit6
+    LDI valReg, 6
+    max7221SetRegister
+    LDI regReg, Max7221RegisterDigit7
+    LDI valReg, 7
+    max7221SetRegister
 
+    LDI r20, 0xF
 loop:
     delayLoopI 0x10
     blink
-    RJMP loop ; otherwise skip on to the next blip
+
+    LDI regReg, Max7221RegisterIntensity
+    MOV valReg, r20
+    max7221SetRegister
+
+    DEC r20
+    RJMP loop

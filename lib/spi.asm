@@ -10,8 +10,16 @@
 
     ; Enable SPI
     IN portReg, SPCR0
-    ORI portReg, ((1 << SPE0) | (1 << MSTR0) | (1 << SPR00))
+    ; enable, set master, divide clock by 16
+    ;ORI portReg, ((1 << SPE0) | (1 << MSTR0) | (1 << SPR00))
+
+    ; enable, set master, divide clock by 128, send data MSB
+    ORI portReg, ((1 << SPE0) | (1 << MSTR0) | (1 << SPR00) | (1 << SPR00))
+    CBR portReg, DORD0 ; WARNING (7221 likes MSB... what about the other chips)
     OUT SPCR0, portReg
+
+    ;LDI portReg, (0 << SPI2X0)
+    ;OUT SPSR0, portReg
 
     ; Setup SCK and MOSI pins AFTER enabling SPI, to avoid
     ; accidentally clocking in a single bit
