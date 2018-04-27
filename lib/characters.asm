@@ -1,41 +1,46 @@
     .CSEG
 
 charnum:
-    .DB 0b01111110 ; 0
-    .DB 0b00000110 ; 1
-    .DB 0b01101101 ; 2
-    .DB 0b01111001 ; 3
-    .DB 0b00110011 ; 4
-    .DB 0b01011011 ; 5
-    .DB 0b01011111 ; 6
-    .DB 0b01110000 ; 7
-    .DB 0b01111111 ; 8
-    .DB 0b01111011 ; 9
+    ;    0           1           2           3
+    .DB 0b01111110, 0b00000110, 0b01101101, 0b01111001
+    ;    4           5           6           7
+    .DB 0b00110011, 0b01011011, 0b01011111, 0b01110000
+    ;    8           9
+    .DB 0b01111111, 0b01111011
 
 charalpha:
-    .DB 0b01110111 ; a
-    .DB 0b00011111 ; b
-    .DB 0b01001110 ; c
-    .DB 0b00111101 ; d
-    .DB 0b01001111 ; e
-    .DB 0b01000111 ; f
-    .DB 0b01011110 ; g
-    .DB 0b00110111 ; h
-    .DB 0b00010000 ; i
-    .DB 0b00111000 ; j
-    .DB 0b00000111 ; k
-    .DB 0b00001110 ; l
-    .DB 0b01010101 ; m
-    .DB 0b00010101 ; n
-    .DB 0b00011101 ; o
-    .DB 0b01100111 ; p
-    .DB 0b01110011 ; q
-    .DB 0b00000101 ; r
-    .DB 0b01011011 ; s
-    .DB 0b00001111 ; t
-    .DB 0b00011100 ; u
-    .DB 0b00111110 ; v
-    .DB 0b01011100 ; w
-    .DB 0b01001001 ; x
-    .DB 0b00111011 ; y
-    .DB 0b01101101 ; z
+    ;    a           b           c           d
+    .DB 0b01110111, 0b00011111, 0b01001110, 0b00111101
+    ;    e           f           g           h
+    .DB 0b01001111, 0b01000111, 0b01011110, 0b00110111
+    ;    i           j           k           l
+    .DB 0b00010000, 0b00111000, 0b00000111, 0b00001110
+    ;    m           n           o           p
+    .DB 0b01010101, 0b00010101, 0b00011101, 0b01100111
+    ;    q           r           s           t
+    .DB 0b01110011, 0b00000101, 0b01011011, 0b00001111
+    ;    u           v           w           x
+    .DB 0b00011100, 0b00111110, 0b01011100, 0b01001001
+    ;    y           z
+    .DB 0b00111011, 0b01101101
+
+; expects ASCII code in quickReg - returns 7 segment binary in quickReg
+getChar:
+    mov addrLReg, quickReg
+    cpi addrLReg, 'a'           ; currently only works with lower case!!!
+    brge isAlpha
+;isNum
+    ldi ZL, low(charNum << 1)   ; BYTE ADDRESS (word address*2) of the table
+    ldi ZH, high(charNum << 1)
+    subi addrLReg, '0'           ; reduce character code to table offset
+    JMP returnChar
+isAlpha:
+    ldi ZL, low(charAlpha << 1) ; BYTE ADDRESS (word address*2) of the table
+    ldi ZH, high(charAlpha << 1)
+    subi addrLReg, 'a'           ; reduce character code to table offset
+returnChar:
+    ldi addrHReg, 0             ; load a dummy 0 for 16-bit addition
+    add ZL, addrLReg
+    adc ZH, addrHReg
+    lpm quickReg, Z
+    ret
