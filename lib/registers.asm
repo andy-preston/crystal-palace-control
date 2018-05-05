@@ -1,3 +1,4 @@
+.DEF dummyJunkReg = r14
 .DEF dummyZeroReg = r15
 
 ; only registers r16-r31 can LDI
