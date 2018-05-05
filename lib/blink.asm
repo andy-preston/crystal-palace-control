@@ -1,9 +1,11 @@
-.MACRO blink
+blink:
+    PUSH portReg
     IN portReg, PORTB
     LDI quickReg, 0b00000001
     EOR portReg, quickReg
     OUT PORTB, portReg
-.ENDMACRO
+    POP portReg
+    RET
 
 .MACRO setupBlink
     IN portReg, DDRB

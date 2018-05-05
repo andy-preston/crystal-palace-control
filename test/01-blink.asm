@@ -11,13 +11,14 @@
 
 progStart:
     CLI
+    setupStack
     setupBlink
 seqStart:
-    LDI r22, 0x20
+    LDI countReg, 0x20
 loop:
-    blink
-    delayLoopR r22
+    call blink
+    delayLoopR countReg
 
-    DEC r22
+    DEC countReg
     BRNE loop
     RJMP seqStart
