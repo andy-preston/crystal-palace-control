@@ -3,24 +3,25 @@
     ; I've only just started with AVR Assembler
     ; I'm not ready for timers just yet
 delay:
-    LDI r24, 0xFF
+    LDI quickReg, 0xFF
+    MOV r2, quickReg
 outerDelay:
-    LDI r25, 0xFF
+    MOV r3, quickReg
 innerDelay:
-    DEC r25
+    DEC r3
     BRNE innerDelay
-    DEC r24
+    DEC r2
     BRNE outerDelay
-    DEC r23
+    DEC r1
     BRNE delay
 .ENDMACRO
 
-.MACRO delayLoopI
-    LDI r23, @0
+.MACRO delayLoopR
+    MOV r1, @0
     doDelay
 .ENDMACRO
 
-.MACRO delayLoopR
-    MOV r23, @0
-    doDelay
+.MACRO delayLoopI
+    LDI quickReg, @0
+    delayLoopR quickReg
 .ENDMACRO
