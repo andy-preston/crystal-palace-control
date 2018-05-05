@@ -21,38 +21,38 @@ progStart:
     setupMax7221
 
     LDI regReg, Max7221RegisterDigit0
-    LDI valReg, 0
+    LDI valReg, 0b01001110 ; c
     max7221SetRegister
     LDI regReg, Max7221RegisterDigit1
-    LDI valReg, 1
+    LDI valReg, 0b00000101 ; r
     max7221SetRegister
     LDI regReg, Max7221RegisterDigit2
-    LDI valReg, 2
+    LDI valReg, 0b00111011 ; y
     max7221SetRegister
     LDI regReg, Max7221RegisterDigit3
-    LDI valReg, 3
+    LDI valReg, 0b01011011 ; s
     max7221SetRegister
     LDI regReg, Max7221RegisterDigit4
-    LDI valReg, 4
+    LDI valReg, 0b00001111 ; t
     max7221SetRegister
     LDI regReg, Max7221RegisterDigit5
-    LDI valReg, 5
+    LDI valReg, 0b01110111 ; a
     max7221SetRegister
     LDI regReg, Max7221RegisterDigit6
-    LDI valReg, 6
+    LDI valReg, 0b10001110 ; l.
     max7221SetRegister
     LDI regReg, Max7221RegisterDigit7
-    LDI valReg, 7
+    LDI valReg, 0b01100111 ; p
     max7221SetRegister
 
-    LDI r20, 0xF
+    LDI countReg, 0x0F
 loop:
-    delayLoopI 0x10
-    blink
+    delayLoopI 3
+    CALL blink
 
     LDI regReg, Max7221RegisterIntensity
-    MOV valReg, r20
+    MOV valReg, countReg
     max7221SetRegister
 
-    DEC r20
+    DEC countReg
     RJMP loop

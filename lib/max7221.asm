@@ -1,5 +1,3 @@
-.EQU Max7221CharBlank=0x00
-
 .EQU Max7221RegisterNoop=0x00
 .EQU Max7221RegisterDigit0=0x01
 .EQU Max7221RegisterDigit1=0x02
@@ -16,7 +14,7 @@
 .EQU Max7221RegisterDisplayTest=0x0F
 
 .MACRO max7221SetRegister
-    LDI selectReg, selectMax7221
+    LDI portReg, selectMax7221
     CALL chipSelect
     MOV spiReg, regReg ; MAX7221 register to set
     spiOut
@@ -25,23 +23,15 @@
     chipDeselect
 .ENDMACRO
 
-.MACRO max7221Clear
-    LDI valReg, 0
-    LDI regReg, 1;
-max7221ClearLoop:
-    max7221SetRegister
-    INC regReg
-    CPI regReg, 8
-    BRNE max7221ClearLoop
-.ENDMACRO
-
-.MACRO max7221Test
-    LDI regReg, Max7221RegisterDisplayTest
-    LDI valReg, 0xF
-    max7221SetRegister
-.ENDMACRO
-
 .MACRO setupMax7221
+    LDI valReg, 0
+    LDI regReg, Max7221RegisterDecodeMode
+    max7221SetRegister
+
+    LDI valReg, 0xF
+    LDI regReg, Max7221RegisterIntensity
+    max7221SetRegister
+
     LDI regReg, Max7221RegisterScanLimit
     LDI valReg, 7 ; display 8 digits
     max7221SetRegister
@@ -50,16 +40,5 @@ max7221ClearLoop:
     LDI valReg, 1 ; shutdown mode = 0
     max7221SetRegister
 
-    LDI valReg, 0
-
-    LDI regReg, Max7221RegisterIntensity
-    max7221SetRegister
-
-    LDI regReg, Max7221RegisterDecodeMode
-    max7221SetRegister
-
-    LDI regReg, Max7221RegisterDisplayTest
-    max7221SetRegister
-
-    max7221Clear
+    ;max7221Clear
 .ENDMACRO
