@@ -5,7 +5,6 @@
 
     .org 0x003E
     .include "../lib/registers.asm"
-    .include "../lib/stack.asm"
     .include "../lib/blink.asm"
     .include "../lib/chipselect.asm"
     .include "./util/delay.asm"
@@ -13,7 +12,7 @@
 progStart:
     CLI
     setupBlink
-    setupStack
+    setupStackAndReg
     setupChipSelect
 resetOutput:
     LDI countReg, 0

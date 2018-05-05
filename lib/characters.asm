@@ -48,8 +48,7 @@ isAlpha:
     LDI ZH, high(charAlpha << 1)
     SUBI addrLReg, 'a'           ; reduce character code to table offset
 returnChar:
-    LDI addrHReg, 0             ; load a dummy 0 for 16-bit addition
     ADD ZL, addrLReg
-    ADC ZH, addrHReg
+    ADC ZH, dummyZeroReg
     LPM valReg, Z
     RET

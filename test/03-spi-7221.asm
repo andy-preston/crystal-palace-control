@@ -5,7 +5,6 @@
 
     .org 0x003E
     .include "../lib/registers.asm"
-    .include "../lib/stack.asm"
     .include "../lib/blink.asm"
     .include "../lib/chipselect.asm"
     .include "../lib/spi.asm"
@@ -15,7 +14,7 @@
 
 progStart:
     CLI
-    setupStack
+    setupStackAndReg
     setupBlink
     setupChipSelect
     setupSpi
