@@ -1,6 +1,13 @@
 The prototype for this project is currently at
 https://github.com/edgeeffect/avr-control-panel
 
+# Hardware
+
+* ATmega324P
+* 74138 (SN74HCT138N) - 1-OF-8 decoder controlling SPI bus Chip Select
+* MAX7221 SPI 7 segment controller
+* 2 4-digit common cathode 7 segment displays
+
 # Toolchain
 
 ## avrdude
