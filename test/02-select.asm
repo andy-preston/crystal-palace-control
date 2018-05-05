@@ -12,22 +12,25 @@
 
 progStart:
     CLI
-    setupStack
     setupBlink
+    setupStack
     setupChipSelect
 resetOutput:
-    LDI selectReg, 0
+    LDI countReg, 0
 loop:
-    blink
+    MOV portReg, countReg
     CALL chipSelect
-    delayLoopI 0x10
 
-    blink
+    delayLoopI 0x10
+    CALL blink
+
     chipDeselect
-    delayLoopI 0x10
 
-    INC selectReg
-    CPI selectReg, 16 ; chip select goes from 0-15
+    delayLoopI 0x10
+    CALL blink
+
+    INC countReg
+    CPI countReg, 16 ; chip select goes from 0-15
     BREQ resetOutput
 
     RJMP loop ; otherwise skip on to the next blip

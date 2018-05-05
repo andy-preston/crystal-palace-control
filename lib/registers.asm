@@ -6,7 +6,6 @@
 .DEF spiReg = r23
 .DEF portReg = r24
 .DEF quickReg = r25
-.DEF selectReg = r26
 
 ; ZL and ZH don't seem to get defined in my version of GAVRASM
 .DEF ZL = r30

@@ -30,8 +30,7 @@
 .ENDMACRO
 
 chipSelect:
-    MOV portReg, selectReg ; chip select value 0-15
-    CPI selectReg, 0x08
+    CPI portReg, 0x08 ; chip select value 0-15 in portReg
     BRLO lowchip
 
     LSL portReg ; if it's 8 or higher shift the lower 3 bits up into the higher
