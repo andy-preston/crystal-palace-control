@@ -10,6 +10,7 @@
     .include "../lib/chipselect.asm"
     .include "../lib/spi.asm"
     .include "../lib/max7221.asm"
+    .include "../lib/characters.asm"
     .include "./util/delay.asm"
 
 progStart:
@@ -20,29 +21,45 @@ progStart:
     setupSpi
     setupMax7221
 
+    getCharI 'c'
+    ; LDI valReg, 0b01001110
     LDI regReg, Max7221RegisterDigit0
-    LDI valReg, 0b01001110 ; c
     max7221SetRegister
+
+    getCharI 'r'
+    ; LDI valReg, 0b00000101
     LDI regReg, Max7221RegisterDigit1
-    LDI valReg, 0b00000101 ; r
     max7221SetRegister
+
+    getCharI 'y'
+    ; LDI valReg, 0b00111011
     LDI regReg, Max7221RegisterDigit2
-    LDI valReg, 0b00111011 ; y
     max7221SetRegister
+
+    getCharI 's'
+    ; LDI valReg, 0b01011011
     LDI regReg, Max7221RegisterDigit3
-    LDI valReg, 0b01011011 ; s
     max7221SetRegister
+
+    getCharI 't'
+    ; LDI valReg, 0b00001111
     LDI regReg, Max7221RegisterDigit4
-    LDI valReg, 0b00001111 ; t
     max7221SetRegister
+
+    getCharI 'a'
+    ; LDI valReg, 0b01110111
     LDI regReg, Max7221RegisterDigit5
-    LDI valReg, 0b01110111 ; a
     max7221SetRegister
+
+    getCharI 'l'
+    ORI valReg, 0b10000000 ; turn decimal point on
+    ; LDI valReg, 0b10001110
     LDI regReg, Max7221RegisterDigit6
-    LDI valReg, 0b10001110 ; l.
     max7221SetRegister
+
+    getCharI 'p'
+    ; LDI valReg, 0b01100111
     LDI regReg, Max7221RegisterDigit7
-    LDI valReg, 0b01100111 ; p
     max7221SetRegister
 
     LDI countReg, 0x0F

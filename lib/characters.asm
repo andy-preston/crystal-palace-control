@@ -24,23 +24,32 @@ charalpha:
     ;    y           z
     .DB 0b00111011, 0b01101101
 
-; expects ASCII code in quickReg - returns 7 segment binary in quickReg
+.MACRO getCharI
+    LDI addrLReg, @0
+    CALL getChar
+.ENDMACRO
+
+; expects ASCII code in addrLReg - Returns 7 segment binary in valReg
 getChar:
-    mov addrLReg, quickReg
-    cpi addrLReg, 'a'           ; currently only works with lower case!!!
-    brge isAlpha
+    CPI addrLReg, ' '
+    BRNE notSpace
+    LDI valReg, 0
+    RET
+notSpace:
+    CPI addrLReg, 'a'           ; currently only works with lower case!!!
+    BRGE isAlpha
 ;isNum
-    ldi ZL, low(charNum << 1)   ; BYTE ADDRESS (word address*2) of the table
-    ldi ZH, high(charNum << 1)
-    subi addrLReg, '0'           ; reduce character code to table offset
+    LDI ZL, low(charNum << 1)   ; BYTE ADDRESS (word address*2) of the table
+    LDI ZH, high(charNum << 1)
+    SUBI addrLReg, '0'           ; reduce character code to table offset
     JMP returnChar
 isAlpha:
-    ldi ZL, low(charAlpha << 1) ; BYTE ADDRESS (word address*2) of the table
-    ldi ZH, high(charAlpha << 1)
-    subi addrLReg, 'a'           ; reduce character code to table offset
+    LDI ZL, low(charAlpha << 1) ; BYTE ADDRESS (word address*2) of the table
+    LDI ZH, high(charAlpha << 1)
+    SUBI addrLReg, 'a'           ; reduce character code to table offset
 returnChar:
-    ldi addrHReg, 0             ; load a dummy 0 for 16-bit addition
-    add ZL, addrLReg
-    adc ZH, addrHReg
-    lpm quickReg, Z
-    ret
+    LDI addrHReg, 0             ; load a dummy 0 for 16-bit addition
+    ADD ZL, addrLReg
+    ADC ZH, addrHReg
+    LPM valReg, Z
+    RET
