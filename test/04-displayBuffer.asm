@@ -31,19 +31,9 @@ stringStart:
 
 displayStart:
     delayLoopI 20
-    call blink
+    CALL blink
 
-    LDI XL, low(displayBuffer)
-    LDI XH, high(displayBuffer)  ; move display buffer
-    LDI regReg, Max7221RegisterDigit0 ; into Max7221 registers
-displayLoop:
-    LD addrLReg, X+    ; addrLReg for getChar
-    CALL getChar       ; ASCII code in addrLReg -> 7 seg code in valReg
-    max7221SetRegister ; register number in regReg, 7 seg code in valReg
-    INC regReg
-    CPI regReg, (Max7221RegisterDigit7 + 1)
-    BRNE displayLoop
-
+    CALL showDisplayBuffer;
     CALL scrollDisplayBuffer ; Y now points to last char ready to recieve another one
 
     LDI ZL, low(testString << 1)   ; get from testString in progam memory

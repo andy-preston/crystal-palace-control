@@ -29,3 +29,16 @@ shiftLoop:
     DEC countReg
     BRNE shiftLoop
     RET
+
+showDisplayBuffer:
+    LDI XL, low(displayBuffer)
+    LDI XH, high(displayBuffer)  ; move display buffer
+    LDI regReg, Max7221RegisterDigit0 ; into Max7221 registers
+showDisplayLoop:
+    LD addrLReg, X+    ; addrLReg for getChar
+    CALL getChar       ; ASCII code in addrLReg -> 7 seg code in valReg
+    max7221SetRegister ; register number in regReg, 7 seg code in valReg
+    INC regReg
+    CPI regReg, (Max7221RegisterDigit7 + 1)
+    BRNE showDisplayLoop
+    RET
