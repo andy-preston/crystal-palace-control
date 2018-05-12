@@ -1,10 +1,10 @@
     .DSEG
 displayBuffer:
     .BYTE 8
-
     .CSEG
 
 clearDisplayBuffer:
+    PUSH countReg
     LDI quickReg, ' '
     LDI countReg, 8
     LDI XL, low(displayBuffer)
@@ -13,6 +13,7 @@ clearDBLoop:
     ST X+, quickReg
     DEC countReg
     BRNE clearDBLoop
+    POP countReg
     RET
 
 scrollDisplayBuffer:
