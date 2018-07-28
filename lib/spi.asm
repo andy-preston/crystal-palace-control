@@ -11,7 +11,9 @@
     ; Enable SPI
     IN portReg, SPCR0
     ; enable, set master, divide clock by 16
-    ORI portReg, ((1 << SPE0) | (1 << MSTR0) | (1 << SPR00))
+    ;ORI portReg, ((1 << SPE0) | (1 << MSTR0) | (1 << SPR00))
+    ; enable, set master, divide clock by 128
+    ORI portReg, ((1 << SPE0) | (1 << MSTR0) | (1 << SPR00) | (1 << SPR10))
 
     ; send data MSB
     ;CBR portReg, DORD0 ; WARNING (7221 likes MSB... what about the other chips)
