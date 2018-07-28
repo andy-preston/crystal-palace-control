@@ -15,7 +15,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; device names mapped to chip select pins
-.EQU selectMax7221 = 0
+.EQU selectMax7221 = 15
 
 .MACRO chipDeselect
     LDI portReg, 0
@@ -36,6 +36,7 @@ chipSelect:
     LSL portReg ; if it's 8 or higher shift the lower 3 bits up into the higher
     LSL portReg ; nybble. Which has the side effect of shifting the 8 bit into
     LSL portReg ; the lower chip enable bit (which enables the HIGH chip)
+
     RJMP skipLowChip
 
 lowchip:
