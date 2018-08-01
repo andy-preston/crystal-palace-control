@@ -26,17 +26,15 @@ progStart:
     CLR countReg
 
 nextNumber:
-    delayLoopI 5
+    delayLoopI 20
     CALL blink
 
     CALL clearDisplayBuffer
 
     numDisplayLeft
-    MOV quickReg, countReg
     CALL numDisplay
 
     numDisplayRight
-    MOV quickReg, countReg
     CALL numDisplay
 
     CALL showDisplayBuffer

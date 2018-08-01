@@ -8,19 +8,25 @@
     LDI XH, high(displayBuffer + 8)
 .ENDMACRO
 
+; TODO: use a better register for this countReg is only really suitable for testing
 numDisplay:
+    PUSH countReg            ; countReg contains number to display
     CLR calcReg
+
 numDisplayLoop:
-    SUBI quickReg, 10
+    MOV quickReg, countReg
+    SUBI countReg, 10
     BRCS numDisplayNextDigit
     INC calcReg
     RJMP numDisplayLoop
 
 numDisplayNextDigit:
-    SUBI quickReg, -58    ; add the overflowed back on and
-                          ; convert BCD to ASCII by adding ASCII('0'), 48
+    LDI countReg, '0'       ; use countReg as a "double quick quickReg" to conv BCD to ASCII ;)
+    ADD quickReg, countReg  ; quickReg is the old value of countReg before 10 was subtracted
     ST -X, quickReg
-    MOV quickReg, calcReg
-    CPI quickReg, 0
+
+    MOV countReg, calcReg
+    CPI countReg, 0
     BRNE numDisplay
+    POP countReg
     RET
