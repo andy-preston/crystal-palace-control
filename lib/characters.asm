@@ -36,15 +36,15 @@ getChar:
     LDI valReg, 0
     RET
 notSpace:
-    CPI addrLReg, 'a'           ; currently only works with lower case!!!
+    CPI addrLReg, 'a'            ; currently only works with lower case!!!
     BRGE isAlpha
 ;isNum
-    LDI ZL, low(charNum << 1)   ; BYTE ADDRESS (word address*2) of the table
+    LDI ZL, low(charNum << 1)    ; BYTE ADDRESS (word address*2) of the table
     LDI ZH, high(charNum << 1)
     SUBI addrLReg, '0'           ; reduce character code to table offset
     JMP returnChar
 isAlpha:
-    LDI ZL, low(charAlpha << 1) ; BYTE ADDRESS (word address*2) of the table
+    LDI ZL, low(charAlpha << 1)  ; BYTE ADDRESS (word address*2) of the table
     LDI ZH, high(charAlpha << 1)
     SUBI addrLReg, 'a'           ; reduce character code to table offset
 returnChar:

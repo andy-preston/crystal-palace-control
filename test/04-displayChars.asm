@@ -34,7 +34,7 @@ displayStart:
     CALL blink
 
     CALL showDisplayBuffer;
-    CALL scrollDisplayBuffer ; Y now points to last char ready to recieve another one
+    CALL scrollDisplayBuffer       ; Y now points to last char ready to recieve another one
 
     LDI ZL, low(testString << 1)   ; get from testString in progam memory
     LDI ZH, high(testString << 1)
