@@ -16,6 +16,7 @@
 
 ; device names mapped to chip select pins
 .EQU selectMax7221 = 15
+.EQU selectMCP2008a = 14
 
 .MACRO chipDeselect
     LDI portReg, 0

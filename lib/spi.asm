@@ -36,5 +36,5 @@ spiOutWait:
 
 .MACRO spiOutIn
     spiOut
-    IN SPDR0, portReg
+    IN SPDR0, inputReg
 .ENDMACRO
