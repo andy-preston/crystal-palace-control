@@ -16,10 +16,12 @@
 .MACRO max7221SetRegister
     LDI portReg, selectMax7221
     CALL chipSelect
-    MOV spiReg, regReg ; MAX7221 register to set
+
+    MOV portReg, regReg ; MAX7221 register to set
     spiOut
-    MOV spiReg, valReg ; value to set
+    MOV portReg, valReg ; value to set
     spiOut
+
     chipDeselect
 .ENDMACRO
 

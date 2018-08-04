@@ -27,14 +27,14 @@
 .ENDMACRO
 
 .MACRO spiOut
-    OUT SPDR0, spiReg
+    OUT SPDR0, portReg
 spiOutWait:
-    IN spiReg, SPSR0
-    ANDI spiReg, (1 << SPIF0)
+    IN portReg, SPSR0
+    ANDI portReg, (1 << SPIF0)
     BREQ spiOutWait
 .ENDMACRO
 
 .MACRO spiOutIn
     spiOut
-    IN SPDR0, spiReg
+    IN SPDR0, portReg
 .ENDMACRO
