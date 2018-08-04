@@ -17,7 +17,6 @@ clearDBLoop:
     RET
 
 scrollDisplayBuffer:
-    PUSH countReg
     ; leaves Y with value to store new character in
     LDI XL, low(displayBuffer)  ; shift characters along one from
     LDI XH, high(displayBuffer) ; X
