@@ -11,22 +11,24 @@
 ; TODO: use a better register for this countReg is only really suitable for testing
 numDisplay:
     PUSH countReg            ; countReg contains number to display
+numDisplayDigit:
     CLR calcReg
 
 numDisplayLoop:
     MOV quickReg, countReg
     SUBI countReg, 10
-    BRCS numDisplayNextDigit
+    BRCS numDisplayFoundDigit
     INC calcReg
     RJMP numDisplayLoop
 
-numDisplayNextDigit:
+numDisplayFoundDigit:
     LDI countReg, '0'       ; use countReg as a "double quick quickReg" to conv BCD to ASCII ;)
     ADD quickReg, countReg  ; quickReg is the old value of countReg before 10 was subtracted
     ST -X, quickReg
 
     MOV countReg, calcReg
     CPI countReg, 0
-    BRNE numDisplay
+    BRNE numDisplayDigit
+
     POP countReg
     RET
