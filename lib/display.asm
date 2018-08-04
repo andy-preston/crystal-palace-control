@@ -17,6 +17,7 @@ clearDBLoop:
     RET
 
 scrollDisplayBuffer:
+    PUSH countReg
     ; leaves Y with value to store new character in
     LDI XL, low(displayBuffer)  ; shift characters along one from
     LDI XH, high(displayBuffer) ; X
@@ -29,6 +30,7 @@ shiftLoop:
     ST Y+, quickReg ; Y now points to last char ready to recieve another one
     DEC countReg
     BRNE shiftLoop
+    POP countReg
     RET
 
 showDisplayBuffer:
