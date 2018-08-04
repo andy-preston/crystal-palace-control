@@ -39,6 +39,4 @@
     LDI regReg, Max7221RegisterShutdown
     LDI valReg, 1 ; shutdown mode = 0
     max7221SetRegister
-
-    ;max7221Clear
 .ENDMACRO
