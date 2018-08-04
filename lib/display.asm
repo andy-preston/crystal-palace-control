@@ -5,10 +5,10 @@ displayBuffer:
 
 clearDisplayBuffer:
     PUSH countReg
-    LDI quickReg, ' '
-    LDI countReg, 8
     LDI XL, low(displayBuffer)
     LDI XH, high(displayBuffer)
+    LDI countReg, 8
+    LDI quickReg, ' '
 clearDBLoop:
     ST X+, quickReg
     DEC countReg
@@ -17,6 +17,7 @@ clearDBLoop:
     RET
 
 scrollDisplayBuffer:
+    PUSH countReg
     ; leaves Y with value to store new character in
     LDI XL, low(displayBuffer)  ; shift characters along one from
     LDI XH, high(displayBuffer) ; X
