@@ -24,7 +24,7 @@ progStart:
     setupChipSelect
     setupSpi
     setupMax7221
-    call clearDisplayBuffer
+    CALL clearDisplayBuffer
 
 stringStart:
     LDI stringLReg, 0 ; stringReg points to character in testString
