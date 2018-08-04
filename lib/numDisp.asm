@@ -8,50 +8,49 @@
     LDI XH, high(displayBuffer + 8)
 .ENDMACRO
 
-; TODO: use a better register for this countReg is only really suitable for testing
 numDisplay:
     CLR calcReg
 
 numDisplayLoop:
-    MOV quickReg, countReg   ; countReg contains number to display
-    SUBI countReg, 10
-    BRCS numDisplayFoundDigit
+    MOV quickReg, numReg   ; numReg contains number to display
+    SUBI numReg, 10
+    BRCS numDisplayFound
     INC calcReg
     RJMP numDisplayLoop
 
-numDisplayFoundDigit:
-    LDI countReg, '0'       ; use countReg as a "double quick quickReg" to conv BCD to ASCII ;)
-    ADD quickReg, countReg  ; quickReg is the old value of countReg before 10 was subtracted
+numDisplayFound:
+    LDI numReg, '0'        ; use numReg as a "double quick quickReg" to conv BCD to ASCII ;)
+    ADD quickReg, numReg   ; quickReg is the old value of numReg before 10 was subtracted
     ST -X, quickReg
 
-    MOV countReg, calcReg
-    CPI countReg, 0
+    MOV numReg, calcReg
+    CPI numReg, 0
     BRNE numDisplay
     RET
 
 numDisplayUnsigned:
-    PUSH countReg
+    PUSH numReg            ; Oh baby, baby!
     CALL numDisplay
-    POP countReg
+    POP numReg
     RET
 
 ; Not true two-compliment negative - maps 0 -> 255 to -127 -> 128
 numDisplaySigned:
-    PUSH countReg
-    CPI countReg, 128
+    PUSH numReg            ; Oh baby, baby!
+    CPI numReg, 128
     BRLO numDisplayNegative
 ; numDisplayPositive
-    SUBI countReg, 127
+    SUBI numReg, 127
     CALL numDisplay
     RJMP numDisplaySignedDone
 numDisplayNegative:
     LDI quickReg, 127
-    SUB quickReg, countReg
-    MOV countReg, quickReg
+    SUB quickReg, numReg
+    MOV numReg, quickReg
     CALL numDisplay
 
     LDI quickReg, '-'
     ST -X, quickReg
 numDisplaySignedDone:
-    POP countReg
+    POP numReg
     RET

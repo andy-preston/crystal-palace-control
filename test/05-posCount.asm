@@ -23,7 +23,7 @@ progStart:
     setupSpi
     setupMax7221
 
-    CLR countReg
+    CLR numReg
 
 nextNumber:
     delayLoopI 20
@@ -39,5 +39,5 @@ nextNumber:
 
     CALL showDisplayBuffer
 
-    INC countReg
+    INC numReg
     RJMP nextNumber
