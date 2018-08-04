@@ -10,12 +10,10 @@
 
 ; TODO: use a better register for this countReg is only really suitable for testing
 numDisplay:
-    PUSH countReg            ; countReg contains number to display
-numDisplayDigit:
     CLR calcReg
 
 numDisplayLoop:
-    MOV quickReg, countReg
+    MOV quickReg, countReg   ; countReg contains number to display
     SUBI countReg, 10
     BRCS numDisplayFoundDigit
     INC calcReg
@@ -28,7 +26,32 @@ numDisplayFoundDigit:
 
     MOV countReg, calcReg
     CPI countReg, 0
-    BRNE numDisplayDigit
+    BRNE numDisplay
+    RET
 
+numDisplayUnsigned:
+    PUSH countReg
+    CALL numDisplay
+    POP countReg
+    RET
+
+; Not true two-compliment negative - maps 0 -> 255 to -127 -> 128
+numDisplaySigned:
+    PUSH countReg
+    CPI countReg, 128
+    BRLO numDisplayNegative
+; numDisplayPositive
+    SUBI countReg, 127
+    CALL numDisplay
+    RJMP numDisplaySignedDone
+numDisplayNegative:
+    LDI quickReg, 127
+    SUB quickReg, countReg
+    MOV countReg, quickReg
+    CALL numDisplay
+
+    LDI quickReg, '-'
+    ST -X, quickReg
+numDisplaySignedDone:
     POP countReg
     RET

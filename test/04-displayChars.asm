@@ -15,7 +15,7 @@
     .include "./util/delay.asm"
 
 testString:
-    .DB "0123456789abcdefghijklmnopqrstuvwxyz  "
+    .DB "0123456789-abcdefghijklmnopqrstuvwxyz   "
 
 progStart:
     CLI

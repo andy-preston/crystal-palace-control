@@ -36,6 +36,11 @@ getChar:
     LDI valReg, 0
     RET
 notSpace:
+    CPI addrLReg, '-'
+    BRNE notMinus
+    LDI valReg, 1
+    RET
+notMinus:
     CPI addrLReg, 'a'            ; currently only works with lower case!!!
     BRGE isAlpha
 ;isNum

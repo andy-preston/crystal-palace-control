@@ -32,10 +32,10 @@ nextNumber:
     CALL clearDisplayBuffer
 
     numDisplayLeft
-    CALL numDisplay
+    CALL numDisplaySigned
 
     numDisplayRight
-    CALL numDisplay
+    CALL numDisplayUnsigned
 
     CALL showDisplayBuffer
 
