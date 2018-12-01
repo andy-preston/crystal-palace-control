@@ -12,10 +12,6 @@ https://trello.com/b/04iQRZz7/cyrstal-palace
 * MAX7221 SPI 7 segment controller
 * 2 4-digit common cathode 7 segment displays
 
-## PCB
-
-* https://easyeda.com/edgeeffect/crystalPalaceControl
-
 # Toolchain
 
 ## avrdude
