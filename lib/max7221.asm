@@ -14,15 +14,14 @@
 .EQU Max7221RegisterDisplayTest=0x0F
 
 .MACRO max7221SetRegister
-    LDI portReg, selectMax7221
-    CALL chipSelect
+    spiSelect1
 
     MOV portReg, regReg ; MAX7221 register to set
     spiOut
     MOV portReg, valReg ; value to set
     spiOut
 
-    chipDeselect
+    spiDeselect
 .ENDMACRO
 
 .MACRO setupMax7221
@@ -30,7 +29,7 @@
     LDI regReg, Max7221RegisterDecodeMode
     max7221SetRegister
 
-    LDI valReg, 0xF
+    LDI valReg, 0x2
     LDI regReg, Max7221RegisterIntensity
     max7221SetRegister
 

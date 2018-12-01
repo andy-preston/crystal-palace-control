@@ -1,32 +1,65 @@
+; If we're using SPI there's no need to setup blink
+; as it's all on PORTB and we do it all in one place
+
+.EQU pinSCK = 7
+.EQU pinMISO = 6
+.EQU pinMOSI = 5
+.EQU pinSS = 4
+.EQU pinCS3 = 3
+.EQU pinCS2 = 2
+.EQU pinCS1 = 1
+.EQU pinBlink = 0 ; miswired as pinCS0
+
+.MACRO spiDeselect
+    SBI PORTB, pinCS3
+    SBI PORTB, pinCS2
+    SBI PORTB, pinCS1
+.ENDMACRO
+
+.EQU selectMax7221 = pinCS1
+
+.MACRO spiSelect1
+    SBI PORTB, pinCS3
+    SBI PORTB, pinCS2
+    CBI PORTB, pinCS1
+.ENDMACRO
+
+.MACRO spiSelect2
+    SBI PORTB, pinCS3
+    SBI PORTB, pinCS1
+    CBI PORTB, pinCS2
+.ENDMACRO
+
+.MACRO spiSelect3
+    SBI PORTB, pinCS2
+    SBI PORTB, pinCS1
+    CBI PORTB, pinCS3
+.ENDMACRO
+
+.EQU  spiDivide16 = 0b00000001 ; default spiDivide4
+.EQU  spiDivide64 = 0b00000010
+.EQU spiDivide128 = 0b00000011
+
 .MACRO setupSpi
     ; Prevent SlaveSelect acting as an input or it'll force SPI into slave mode
-    IN portReg, DDRB
-    ORI portReg, 0b00010000 ; PB4 = output
+    LDI portReg, (1 << pinSS) | (1 << pinCS1) | (1 << pinCS2) | (1 << pinCS3) | (1 << pinBlink)
     OUT DDRB, portReg
 
-    IN portReg, PORTB
-    ANDI portReg, 0b00010000 ; PB4 = high
-    OUT PORTB, portReg
+    SBI PORTB, pinSS
+    SBI PORTB, pinBlink
 
-    ; Enable SPI
-    IN portReg, SPCR0
-    ; enable, set master, divide clock by 16
-    ;ORI portReg, ((1 << SPE0) | (1 << MSTR0) | (1 << SPR00))
-    ; enable, set master, divide clock by 128
-    ORI portReg, ((1 << SPE0) | (1 << MSTR0) | (1 << SPR00) | (1 << SPR10))
-
-    ; send data MSB
-    ;CBR portReg, DORD0 ; WARNING (7221 likes MSB... what about the other chips)
+    LDI portReg, (1 << SPE0) | ( 1 << MSTR0 ) ;| spiDivide128
     OUT SPCR0, portReg
 
     ; Setup SCK and MOSI pins AFTER enabling SPI, to avoid
     ; accidentally clocking in a single bit
-    IN portReg, DDRB
-    ORI portReg, 0b10100000 ; PB7(SCK) PB5(MOSI) = output
-    OUT DDRB, portReg
+    SBI DDRB, pinMOSI
+    SBI DDRB, pinSCK
+
+    spiDeselect
 .ENDMACRO
 
-.MACRO spiOut
+.MACRO spiOut ; value in portReg
     OUT SPDR0, portReg
 spiOutWait:
     IN portReg, SPSR0
@@ -36,5 +69,5 @@ spiOutWait:
 
 .MACRO spiOutIn
     spiOut
-    IN SPDR0, inputReg
+    IN inputReg, SPDR0
 .ENDMACRO

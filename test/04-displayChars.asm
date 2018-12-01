@@ -7,7 +7,6 @@
     .org 0x003E
     .include "../lib/registers.asm"
     .include "../lib/blink.asm"
-    .include "../lib/chipselect.asm"
     .include "../lib/spi.asm"
     .include "../lib/max7221.asm"
     .include "../lib/characters.asm"
@@ -15,13 +14,11 @@
     .include "./util/delay.asm"
 
 testString:
-    .DB "0123456789-abcdefghijklmnopqrstuvwxyz   "
+    .DB "0123456789-abcdefghijklmnopqrstuvwxyz  \@"
 
 progStart:
     CLI
     setupStackAndReg
-    setupBlink
-    setupChipSelect
     setupSpi
     setupMax7221
     CALL clearDisplayBuffer
@@ -41,9 +38,9 @@ displayStart:
     ADD ZL, stringLReg             ; stringReg holds the current offset
     ADC ZH, dummyZeroReg
     LPM quickReg, Z
-    ST Y, quickReg                 ; Y is last char - after shift operation
-    CPI quickReg, ' '              ; space is the last char
+    CPI quickReg, 0                ; NULL Terminator
     BREQ stringStart               ; back to start of string
+    ST Y, quickReg                 ; Y is last char - after shift operation
 
     INC stringLReg
     JMP displayStart               ; or display next char
