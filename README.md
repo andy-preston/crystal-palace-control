@@ -1,5 +1,9 @@
 The prototype for this project is currently at
-https://github.com/edgeeffect/avr-control-panel
+https://gitlab.com/edgeeffect/avr-control-panel
+
+# Issue Tracking / Project Management
+
+https://trello.com/b/04iQRZz7/cyrstal-palace
 
 # Hardware
 
