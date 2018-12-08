@@ -1,3 +1,4 @@
+.DEF clockReg = r11
 .DEF inputReg = r12
 .DEF calcReg = r13
 .DEF dummyJunkReg = r14
