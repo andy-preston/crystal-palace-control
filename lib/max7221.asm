@@ -14,7 +14,7 @@
 .EQU Max7221RegisterDisplayTest=0x0F
 
 .MACRO max7221SetRegister
-    spiSelect1
+    spiSelect2
 
     MOV portReg, regReg ; MAX7221 register to set
     spiOut
