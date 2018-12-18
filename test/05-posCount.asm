@@ -7,7 +7,6 @@
     .org 0x003E
     .include "../lib/registers.asm"
     .include "../lib/blink.asm"
-    .include "../lib/chipselect.asm"
     .include "../lib/spi.asm"
     .include "../lib/max7221.asm"
     .include "../lib/characters.asm"
@@ -18,8 +17,6 @@
 progStart:
     CLI
     setupStackAndReg
-    setupBlink
-    setupChipSelect
     setupSpi
     setupMax7221
 
