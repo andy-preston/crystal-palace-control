@@ -62,7 +62,7 @@
 .MACRO spiOut ; value in portReg
     OUT SPDR0, portReg
 spiOutWait:
-    IN portReg, SPSR0
+    IN portReg, SPSR0 ; Can't use SBIS for port > 31
     ANDI portReg, (1 << SPIF0)
     BREQ spiOutWait
 .ENDMACRO
