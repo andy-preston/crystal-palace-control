@@ -1,6 +1,8 @@
+.DEF calcReg = r10
 .DEF clockReg = r11
 .DEF inputReg = r12
-.DEF calcReg = r13
+.DEF inputLReg = r12 ; inputReg is sometimes 16 bit
+.DEF inputHReg = r13
 .DEF dummyJunkReg = r14
 .DEF dummyZeroReg = r15
 
@@ -28,8 +30,8 @@
 .MACRO setupStackAndReg
     CLR dummyZeroReg
 
-    LDI	quickReg, high(RAMEND)
-    OUT	SPH, quickReg
-    LDI	quickReg, low(RAMEND)
-    OUT	SPL, quickReg
+    LDI quickReg, high(RAMEND)
+    OUT SPH, quickReg
+    LDI quickReg, low(RAMEND)
+    OUT SPL, quickReg
 .ENDMACRO
