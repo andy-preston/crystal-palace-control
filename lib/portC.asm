@@ -13,9 +13,11 @@
     ; Lower nybble of clock reg - address output to the 4067s & the 74138s
     CLR clockReg
     clockOut
+
+    ; TODO: any additional setup in input nybble may need
 .ENDMACRO
 
 .MACRO clockTick
-    INC clockReg
     clockOut
+    INC clockReg
 .ENDMACRO
