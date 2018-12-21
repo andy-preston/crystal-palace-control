@@ -8,7 +8,10 @@ https://trello.com/b/04iQRZz7/cyrstal-palace
 # Hardware
 
 * ATmega324P
-* 74138 (SN74HCT138N) - 1-OF-8 decoder controlling SPI bus Chip Select
+* 74138 (SN74HCT138N) digital decoder
+* 74148 X 2 digital multiplexers
+* 4067 X 2 analogue multiplexers
+* 10K Linear Potentiometers X 32
 * MAX7221 SPI 7 segment controller
 * 2 4-digit common cathode 7 segment displays
 
