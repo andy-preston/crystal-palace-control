@@ -48,7 +48,12 @@
     SBI PORTB, pinSS
     SBI PORTB, pinBlink
 
-    LDI portReg, (1 << SPE0) | ( 1 << MSTR0 ) ;| spiDivide128
+    LDI portReg, 0 ; disable SPI2X
+    OUT SPSR0, portReg
+
+    ; Either the MAX7221 or my shoddy board layout requires that the clock be
+    ; divided by at least 16
+    LDI portReg, (1 << SPE0) | ( 1 << MSTR0 ) | spiDivide16
     OUT SPCR0, portReg
 
     ; Setup SCK and MOSI pins AFTER enabling SPI, to avoid
