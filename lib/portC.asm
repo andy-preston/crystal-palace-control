@@ -18,6 +18,9 @@
 .ENDMACRO
 
 .MACRO clockTick
-    clockOut
+    ; We'll miss 0 on the first run around
+    ; But the increment must be done prior to writing to the muxs
+    ; because other code may want to know what clockReg is holding
     INC clockReg
+    clockOut
 .ENDMACRO
