@@ -32,7 +32,7 @@ nextNumber:
 
 skipTick:
 
-    delayLoopI 10
+    delayLoopI 2
     INC countReg
     CALL blink
 
@@ -48,6 +48,7 @@ skipTick:
 
     numDisplayLeft
     MOV numReg, clockReg
+    ANDI numReg, 0b00011111
     CALL numDisplayUnsigned
 
     CALL showDisplayBuffer

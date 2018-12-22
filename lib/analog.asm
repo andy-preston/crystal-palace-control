@@ -22,13 +22,7 @@
 .ENDMACRO
 
 .MACRO analogStart
-    ;MOV portReg, clockReg    ; count in clockReg
-
-    ; temporary for testing
-    LDI portReg, 0b00010000
-    ; end test code
-
-
+    MOV portReg, clockReg    ; count in clockReg
     LSR portReg
     LSR portReg
     LSR portReg
