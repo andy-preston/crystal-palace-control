@@ -34,7 +34,7 @@ stringStart:
 
 displayStart:
     blink
-    delayLoopI 2
+    delayLoopI 32
 
     scrollDisplayBuffer           ; Y now points to last char ready to recieve another one
     LDI ZL, low(testString << 1)  ; get from testString in progam memory

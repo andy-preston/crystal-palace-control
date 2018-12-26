@@ -10,11 +10,11 @@
 .def dummyJunkReg = r14
 .def dummyZeroReg = r15
 
-; only registers r16-r31 can LDI
+; only registers r16-r31 can use immediate
 
 .def stringLReg = r18
 ;.def stringHReg = r19
-.def dispReg = r20       ; value to write to an IO chip register
+.def dispReg = r20      ; value to write to an IO chip register
 ; r21
 
 ; numReg is only used by num-disp.asm - that may need rewriting yet
@@ -39,7 +39,6 @@
     OUT SPL, quickReg
 
     CLR dummyZeroReg
-    CLR dispReg
     CLR clockReg
     DEC clockReg ; so when we INC it, it'll be 0
 .endm
