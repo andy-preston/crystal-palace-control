@@ -1,21 +1,26 @@
-    .device ATmega324P
+.device ATmega324P
 
-    .org 0x0000   ; reset vector
+.org 0x0000   ; reset vector
     JMP progStart
 
-    .org 0x003E
-    .include "../lib/registers.asm"
-    .include "../lib/blink.asm"
-    .include "./util/delay.asm"
+.org 0x003E
+
+.macro delayTick
+    NOP
+.endm
+
+.include "../lib/registers.asm"
+.include "../lib/ports.asm"
+.include "./util/delay.asm"
 
 progStart:
     CLI
     setupStackAndReg
-    setupBlink
+    setupPorts
 seqStart:
     LDI countReg, 0x20
 loop:
-    call blink
+    blink
     delayLoopR countReg
 
     DEC countReg

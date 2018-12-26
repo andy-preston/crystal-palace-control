@@ -1,37 +1,45 @@
-.DEF calcReg = r10
-.DEF clockReg = r11
-.DEF inputReg = r12
-.DEF inputLReg = r12 ; inputReg is sometimes 16 bit
-.DEF inputHReg = r13
-.DEF dummyJunkReg = r14
-.DEF dummyZeroReg = r15
+; r1, r2 and r3 are used by test/util/delay.asm
+
+.def ioReg = r8
+.def calcReg = r9
+.def clockReg = r10
+.def clockOutReg = r11
+.def inputReg = r12
+.def inputLReg = r12 ; inputReg is sometimes 16 bit
+.def inputHReg = r13
+.def dummyJunkReg = r14
+.def dummyZeroReg = r15
 
 ; only registers r16-r31 can LDI
 
-.DEF addrLReg = r16
-;.DEF addrHReg = r17
-.DEF stringLReg = r18
-;.DEF stringHReg = r19
-.DEF valReg = r20       ; value to write to an IO chip register
-.DEF regReg = r21       ; register in a IO chip
-.DEF numReg = r22       ; A number value from a control on the panel
-.DEF portReg = r23      ; value to write to AVR port
-.DEF quickReg = r24     ; very short intermediate values
-.DEF countReg = r25
+.def stringLReg = r18
+;.def stringHReg = r19
+.def dispReg = r20       ; value to write to an IO chip register
+; r21
+
+; numReg is only used by num-disp.asm - that may need rewriting yet
+.def numReg = r22       ; A number value from a control on the panel
+
+.def portReg = r23      ; value to write to AVR port
+.def quickReg = r24     ; very short intermediate values
+.def countReg = r25
 
 ; XL, XH, YL, YH, ZL, ZH don't seem to get defined in my version of GAVRASM
-.DEF XL = r26
-.DEF XH = r27
-.DEF YL = r28
-.DEF YH = r29
-.DEF ZL = r30
-.DEF ZH = r31
+.def XL = r26
+.def XH = r27
+.def YL = r28
+.def YH = r29
+.def ZL = r30
+.def ZH = r31
 
-.MACRO setupStackAndReg
-    CLR dummyZeroReg
-
+.macro setupStackAndReg
     LDI quickReg, high(RAMEND)
     OUT SPH, quickReg
     LDI quickReg, low(RAMEND)
     OUT SPL, quickReg
-.ENDMACRO
+
+    CLR dummyZeroReg
+    CLR dispReg
+    CLR clockReg
+    DEC clockReg ; so when we INC it, it'll be 0
+.endm
