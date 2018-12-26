@@ -37,7 +37,6 @@
 .ENDMACRO
 
 .MACRO analogRead
-    ; see TODO on MACRO spiOut
 analogReadWait:
     LDS portReg, ADCSRA      ; Can't use SBIS for port > 31
     ANDI portReg, (1 << ADSC)
