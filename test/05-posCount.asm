@@ -1,40 +1,37 @@
-    .device ATmega324P
+.device ATmega324P
 
-    .CSEG
-    .org 0x0000   ; reset vector
+.cseg
+.org 0x0000   ; reset vector
     JMP progStart
 
-    .org 0x003E
-    .include "../lib/registers.asm"
-    .include "../lib/blink.asm"
-    .include "../lib/spi.asm"
-    .include "../lib/max7221.asm"
-    .include "../lib/characters.asm"
-    .include "../lib/display.asm"
-    .include "../lib/numDisp.asm"
-    .include "./util/delay.asm"
+.org 0x003E
+.include "../lib/registers.asm"
+.include "../lib/ports.asm"
+.include "../lib/display.asm"
+.include "../lib/numDisp.asm"
+.include "../lib/clock.asm"
+
+.macro delayTick
+    clockTick
+    getDisplayCell
+    portsOut
+.endm
+
+.include "./util/delay.asm"
 
 progStart:
     CLI
     setupStackAndReg
-    setupSpi
-    setupMax7221
-
+    setupPorts
     CLR numReg
 
 nextNumber:
-    delayLoopI 20
-    CALL blink
-
-    CALL clearDisplayBuffer
-
+    delayLoopI 8
+    blink
+    clearDisplayBuffer
     numDisplayLeft
     CALL numDisplaySigned
-
     numDisplayRight
     CALL numDisplayUnsigned
-
-    CALL showDisplayBuffer
-
     INC numReg
     RJMP nextNumber
