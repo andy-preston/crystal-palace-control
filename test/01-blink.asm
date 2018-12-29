@@ -4,13 +4,9 @@
     JMP progStart
 
 .org 0x003E
-
-.macro delayTick
-    NOP
-.endm
-
 .include "../lib/registers.asm"
 .include "../lib/ports.asm"
+.include "./util/delayTickNop.asm"
 .include "./util/delay.asm"
 
 progStart:

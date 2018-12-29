@@ -2,45 +2,40 @@
 
 displayBuffer:
     .byte 8
+textBuffer:
+    .byte 8
 
 .cseg
 
-.macro clearDisplayBuffer
-    LDI XL, low(displayBuffer)
-    LDI XH, high(displayBuffer)
+.macro clearBuffer
+    LDI XL, low(@0)
+    LDI XH, high(@0) ; parameter 0 either displayBuffer or textBuffer
     LDI countReg, 8
-    LDI quickReg, ' '
-clearDBLoop:
+    LDI quickReg, 0
+clearBufLoop:
     ST X+, quickReg
     DEC countReg
-    BRNE clearDBLoop
+    BRNE clearBufLoop
 .endm
 
-.macro scrollDisplayBuffer
-    ; leaves Y with value to store new character in
-    LDI XL, low(displayBuffer)  ; shift characters along one from
-    LDI XH, high(displayBuffer) ; X
-    LDI YL, low(displayBuffer)  ; into
-    LDI YH, high(displayBuffer) ; Y
-    LD dummyJunkReg, X+         ; dummy operation to INC X
-    LDI countReg, 7             ; 7 to shift (leave last one alone)
+.macro scrollBuffer     ; parameter either displayBuffer or textBuffer
+    LDI XL, low(@0)     ; shift characters along one from
+    LDI XH, high(@0)    ; X
+    LDI YL, low(@0)     ; into
+    LDI YH, high(@0)    ; Y
+    ADIW X, 1
+    LDI countReg, 7     ; 7 to shift (leave last one alone)
 shiftLoop:
     LD quickReg, X+
-    ST Y+, quickReg ; Y now points to last char ready to recieve another one
+    ST Y+, quickReg     ; Y now points to last char ready to recieve another one
     DEC countReg
     BRNE shiftLoop
-.endm
+.endm                   ; leaves Y with value to store new character in
 
-.macro getDisplayCell
-    LDI XL, low(displayBuffer)
-    LDI XH, high(displayBuffer) ; move display buffer
-    MOV quickReg, clockReg      ; get display cell from clockReg
-    ANDI quickReg, 0b00000111   ; there's only 8 display cells
-    ADD XL, quickReg            ; buffer displacement
-    ADC XH, dummyZeroReg
-    LD dispReg, X
-
-    ; ASCII code -> 7 seg code
+.macro translateCharacter ; ASCII code -> 7 seg code
+    CPI dispReg, 0
+    BREQ gotChar
+;notNull
     CPI dispReg, ' '
     BRNE notSpace
     LDI dispReg, 0
@@ -67,6 +62,30 @@ getCharFromDefs:
     ADC ZH, dummyZeroReg
     LPM dispReg, Z
 gotChar:
+.endm
+
+.macro translateBuffer
+    LDI XL, low(textBuffer)
+    LDI XH, high(textBuffer)
+    LDI YL, low(displayBuffer)
+    LDI YH, high(displayBuffer)
+    LDI countReg, 8
+translateLoop:
+    LD dispReg, X+
+    translateCharacter
+    ST Y+, dispReg
+    DEC countReg
+    BRNE translateLoop
+.endm
+
+.macro getDisplayCell
+    LDI XL, low(displayBuffer)
+    LDI XH, high(displayBuffer) ; move display buffer
+    MOV quickReg, clockReg      ; get display cell from clockReg
+    ANDI quickReg, 0b00000111   ; there's only 8 display cells
+    ADD XL, quickReg            ; buffer displacement
+    ADC XH, dummyZeroReg
+    LD dispReg, X
 .endm
 
 charnum:
