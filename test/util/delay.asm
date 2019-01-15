@@ -4,7 +4,6 @@ delay:
     LDI quickReg, 0xFF
     MOV r2, quickReg
 outerDelay:
-    delayTick
     LDI quickReg, 0xFF
     MOV r3, quickReg
 innerDelay:

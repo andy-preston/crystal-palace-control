@@ -23,7 +23,7 @@
 ; numReg is only used by num-disp.asm - that may need rewriting yet
 .def numReg = r22       ; A number value from a control on the panel
 
-.def portReg = r23      ; value to write to AVR port
+.def portReg = r23      ; value to write to AVR port - SPI chip register ID
 .def lhReg = r24
 .def lowReg = r24
 .def highReg = r25
@@ -39,6 +39,8 @@
 .def ZH = r31
 
 .macro setupStackAndReg
+    CLI
+
     LDI quickReg, high(RAMEND)
     OUT SPH, quickReg
     LDI quickReg, low(RAMEND)

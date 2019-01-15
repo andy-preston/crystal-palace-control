@@ -1,3 +1,0 @@
-.macro delayTick
-    NOP
-.endm

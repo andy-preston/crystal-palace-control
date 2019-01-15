@@ -5,14 +5,13 @@
 
 .org 0x003E
 .include "../lib/registers.asm"
-.include "../lib/ports.asm"
-.include "./util/delayTickNop.asm"
+.include "../lib/portB.asm"
 .include "./util/delay.asm"
 
 progStart:
     CLI
     setupStackAndReg
-    setupPorts
+    setupBlink
 seqStart:
     LDI countReg, 0x20
 loop:

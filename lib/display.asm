@@ -1,15 +1,13 @@
 .dseg
 
-displayBuffer:
-    .byte 8
 textBuffer:
     .byte 8
 
 .cseg
 
-.macro clearBuffer
-    LDI XL, low(@0)
-    LDI XH, high(@0) ; parameter 0 either displayBuffer or textBuffer
+.macro clearTextBuffer
+    LDI XL, low(textBuffer)
+    LDI XH, high(textBuffer)
     LDI countReg, 8
     LDI quickReg, 0
 clearBufLoop:
@@ -18,21 +16,21 @@ clearBufLoop:
     BRNE clearBufLoop
 .endm
 
-.macro scrollBuffer     ; parameter either displayBuffer or textBuffer
-    LDI XL, low(@0)     ; shift characters along one from
-    LDI XH, high(@0)    ; X
-    LDI YL, low(@0)     ; into
-    LDI YH, high(@0)    ; Y
+.macro scrollTextBuffer
+    LDI XL, low(textBuffer)  ; shift characters along one from
+    LDI XH, high(textBuffer) ; X
+    LDI YL, low(textBuffer)  ; into
+    LDI YH, high(textBuffer) ; Y
     ADIW X, 1
-    LDI countReg, 7     ; 7 to shift (leave last one alone)
+    LDI countReg, 7          ; 7 to shift (leave last one alone)
 shiftLoop:
     LD quickReg, X+
-    ST Y+, quickReg     ; Y now points to last char ready to recieve another one
+    ST Y+, quickReg          ; Y now points to last char ready to recieve next
     DEC countReg
     BRNE shiftLoop
-.endm                   ; leaves Y with value to store new character in
+.endm                        ; leaves Y with value to store new character in
 
-.macro translateCharacter ; ASCII code -> 7 seg code
+.macro translateCharacter    ; dispReg, ASCII code -> 7 seg code
     CPI dispReg, 0
     BREQ gotChar
 ;notNull
@@ -49,12 +47,12 @@ notMinus:
     CPI dispReg, 'a'              ; currently only works with lower case!!!
     BRGE isAlpha
 ;isNum
-    LDI ZL, low(charNum << 1)    ; BYTE ADDRESS (word address*2) of the table
+    LDI ZL, low(charNum << 1)     ; BYTE ADDRESS (word address*2) of the table
     LDI ZH, high(charNum << 1)
     SUBI dispReg, '0'             ; reduce character code to table offset
     RJMP getCharFromDefs
 isAlpha:
-    LDI ZL, low(charAlpha << 1)  ; BYTE ADDRESS (word address*2) of the table
+    LDI ZL, low(charAlpha << 1)   ; BYTE ADDRESS (word address*2) of the table
     LDI ZH, high(charAlpha << 1)
     SUBI dispReg, 'a'             ; reduce character code to table offset
 getCharFromDefs:
@@ -64,28 +62,17 @@ getCharFromDefs:
 gotChar:
 .endm
 
-.macro translateBuffer
+.macro displayTextBuffer
     LDI XL, low(textBuffer)
     LDI XH, high(textBuffer)
-    LDI YL, low(displayBuffer)
-    LDI YH, high(displayBuffer)
-    LDI countReg, 8
-translateLoop:
+    LDI portReg, Max7221RegisterDigit0
+displayTextLoop:
     LD dispReg, X+
     translateCharacter
-    ST Y+, dispReg
-    DEC countReg
-    BRNE translateLoop
-.endm
-
-.macro getDisplayCell
-    LDI XL, low(displayBuffer)
-    LDI XH, high(displayBuffer) ; move display buffer
-    MOV quickReg, clockReg      ; get display cell from clockReg
-    ANDI quickReg, 0b00000111   ; there's only 8 display cells
-    ADD XL, quickReg            ; buffer displacement
-    ADC XH, dummyZeroReg
-    LD dispReg, X
+    CALL max7221SetRegister
+    INC portReg
+    CPI portReg, Max7221RegisterDigit7
+    BRNE displayTextLoop
 .endm
 
 charnum:
