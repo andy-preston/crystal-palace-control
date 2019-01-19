@@ -1,9 +1,8 @@
 ; r1, r2 and r3 are used by test/util/delay.asm
 
-.def ioReg = r6
-.def calcReg = r7
-.def clockReg = r8
-.def clockOutReg = r9
+.def ioReg = r7
+.def calcReg = r8
+.def clockReg = r9
 .def saveReg = r10
 .def saveLReg = r10
 .def saveHReg = r11

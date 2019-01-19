@@ -6,18 +6,35 @@
 .org 0x003E
 
 .include "../lib/registers.asm"
-.include "../lib/ports.asm"
-.include "../lib/clock.asm"
-.include "./util/delayTickNop.asm"
+.include "../lib/portB.asm"
+.include "../lib/portC.asm"
+.include "../lib/max7221.asm"
+.include "../lib/display.asm"
+.include "../lib/numDisp.asm"
 .include "./util/delay.asm"
 
 progStart:
     CLI
     setupStackAndReg
-    setupPorts
+    setupSpi
+    setupMax7221
+    setupPortC
+    CLR highReg
 loop:
-    clockTick
-    portsOut
+    delayLoopI 64
     blink
-    delayLoopI 0x20
+    clearTextBuffer
+
+    clockTick
+    numDisplayLeft
+    MOV lowReg, portReg
+    CALL numDisplayUnsigned
+
+    readC
+    numDisplayRight
+    MOV lowReg, inputReg
+    CALL numDisplayUnsigned
+
+    displayTextBuffer
+
     RJMP loop
