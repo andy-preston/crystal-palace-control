@@ -8,11 +8,11 @@ textBuffer:
 .macro clearTextBuffer
     LDI XL, low(textBuffer)
     LDI XH, high(textBuffer)
-    LDI countReg, 8
+    LDI stringLReg, 8
     LDI quickReg, 0
 clearBufLoop:
     ST X+, quickReg
-    DEC countReg
+    DEC stringLReg
     BRNE clearBufLoop
 .endm
 
@@ -22,11 +22,11 @@ clearBufLoop:
     LDI YL, low(textBuffer)  ; into
     LDI YH, high(textBuffer) ; Y
     ADIW X, 1
-    LDI countReg, 7          ; 7 to shift (leave last one alone)
+    LDI stringLReg, 7        ; 7 to shift (leave last one alone)
 shiftLoop:
     LD quickReg, X+
     ST Y+, quickReg          ; Y now points to last char ready to recieve next
-    DEC countReg
+    DEC stringLReg
     BRNE shiftLoop
 .endm                        ; leaves Y with value to store new character in
 
