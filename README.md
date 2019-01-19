@@ -1,9 +1,9 @@
-Crystal Palace Control
+# Crystal Palace Control
 
 The human-interface components of my home made digital (pseudo-analog)
 Synthesizer project. https://hackaday.io/project/18950-crystal-palace
 
-# Hardware
+## Hardware
 
 * ATmega324P (I'm using it on an RKAT40c board)
 * MAX7221 SPI 7 segment controller
@@ -17,23 +17,23 @@ Synthesizer project. https://hackaday.io/project/18950-crystal-palace
 RKAT40c here:
 https://www.rkeducation.co.uk/rkat40c-mcc-compact-project-pcb-for-40-pin-atmel-and-sanguino---self-build-kit-727-p.asp
 
-# Toolchain
+## Toolchain
 
-## avrdude
+### avrdude
 
 I've just got the avrdude that comes with my Linux distribution
 
-## assembler
+### assembler
 
 I couldn't get avra to work with the m1284P
 and the GNU avr-as had complicated syntax
 then I found gavrasm which seems to do the trick very nicely
 http://www.avr-asm-tutorial.net/gavrasm/index_en.html
 
-# Assemble
+## Assemble
 
     ~/bin/gavrasm -M test.asm
 
-# Program
+## Program
 
     avrdude -B10 -c usbasp-clone -p m324p -U flash:w:test.hex
