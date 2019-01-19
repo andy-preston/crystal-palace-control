@@ -55,22 +55,18 @@ numDisplay100:
     CALL numDisplayDigit
 
     LDI dispReg, '0' - 1
-    CLR saveHReg
 numDisplay10:
     INC dispReg
     MOV saveLReg, lowReg
     SUBI lowReg, 10
     BRCC numDisplay10
     MOV lowReg, saveLReg      ; restore number from before overflow
-    MOV highReg, saveHReg
     CALL numDisplayDigit
 
 numDisplayUnit:
-    CLT ; even if it is all zeros, we want to see the last one
     LDI dispReg, '0'
     ADD dispReg, lowReg
-    CALL numDisplayDigit
-    RET
+    RJMP numDisplayDoDigit ; even if it is all zeros, we want to see the last one
 
 ; ------------------------------------------------------------------------------
 
@@ -95,7 +91,7 @@ numDisplaySigned:
     SUBI lowReg, low(511)
     SBCI highReg, high(511)
     CALL numDisplayShared
-    RJMP numDisplayExit
+    RJMP numDisplayExit      ; Careful now! Approaching spagetti
 
 numDisplayNegative:
     MOVW Z, lhReg
@@ -104,13 +100,12 @@ numDisplayNegative:
     SUB lowReg, ZL
     SBC highReg, ZH
     CALL numDisplayShared
+
 minusSignLoop:
+    LD dispReg, -X
+    CPI dispReg, ' '
+    BRNE minusSignLoop
+    LDI dispReg, '-'
+    ST X, dispReg
 
-    ; TODO: Add the negative sign
-
-    ;LD dispReg, -X
-    ;CPI dispReg, ' '
-    ;BRNE minusSignLoop
-    ;LDI dispReg, '-'
-    ;ST X, dispReg
-    RJMP numDisplayExit
+    RJMP numDisplayExit      ; Careful now! Approaching spagetti
