@@ -71,7 +71,7 @@ displayTextLoop:
     translateCharacter
     CALL max7221SetRegister
     INC portReg
-    CPI portReg, Max7221RegisterDigit7
+    CPI portReg, (Max7221RegisterDigit7 + 1)
     BRNE displayTextLoop
 .endm
 

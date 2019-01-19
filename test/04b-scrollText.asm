@@ -8,10 +8,9 @@
 .org 0x003E
 
 .include "../lib/registers.asm"
-.include "../lib/ports.asm"
+.include "../lib/portB.asm"
+.include "../lib/max7221.asm"
 .include "../lib/display.asm"
-.include "../lib/clock.asm"
-.include "./util/delayTickDisplay.asm"
 .include "./util/delay.asm"
 
 testString:
@@ -20,8 +19,9 @@ testString:
 progStart:
     CLI
     setupStackAndReg
-    setupPorts
-    clearBuffer displayBuffer
+    setupSpi
+    setupMax7221
+    clearTextBuffer
 
 stringStart:
     LDI stringLReg, 0             ; stringReg points to character in testString
@@ -29,7 +29,6 @@ stringStart:
 displayStart:
     blink
     delayLoopI 16
-    scrollBuffer displayBuffer    ; Y now points to last char ready to recieve another one
     LDI ZL, low(testString << 1)  ; get from testString in progam memory
     LDI ZH, high(testString << 1)
     ADD ZL, stringLReg            ; stringReg holds the current offset
@@ -39,7 +38,8 @@ displayStart:
     BRNE notDisplayEnd
     JMP stringStart
 notDisplayEnd:
-    translateCharacter
+    scrollTextBuffer              ; Y now points to last char ready to recieve another one
     ST Y, dispReg                 ; Y is last char - after shift operation
+    displayTextBuffer
     INC stringLReg
     JMP displayStart              ; or display next char
