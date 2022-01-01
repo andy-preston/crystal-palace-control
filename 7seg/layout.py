@@ -259,18 +259,18 @@ chars = {
 # E C
 #  D
 
-print '    .CSEG'
-print '\ncharnum:'
+print('    .CSEG')
+print('\ncharNumeric:')
 for character in sorted(chars):
     if character == 'a':
-        print '\ncharalpha:'
+        print('\ncharAlphabet:')
     bars = chars[character]
     binary = '0b0' + \
-        ('1' if bars[0]  == '---' else '0') + \
+        ('1' if bars[0] == '---' else '0') + \
         ('1' if bars[1][2] == '|' else '0') + \
         ('1' if bars[3][2] == '|' else '0') + \
-        ('1' if bars[4]  == '---' else '0') + \
+        ('1' if bars[4] == '---' else '0') + \
         ('1' if bars[3][0] == '|' else '0') + \
         ('1' if bars[1][0] == '|' else '0') + \
-        ('1' if bars[2]  == '---' else '0')
-    print '    .DB', binary, ';', character
+        ('1' if bars[2] == '---' else '0')
+    print('    .DB', binary, ';', character)
