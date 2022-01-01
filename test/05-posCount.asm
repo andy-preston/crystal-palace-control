@@ -1,24 +1,24 @@
-.device ATmega324P
+    .device ATmega164P
 
-.cseg
-.org 0x0000   ; reset vector
-    JMP progStart
+    .cseg
+    .org 0x0000   ; reset vector
+    jmp progStart
 
-.org 0x003E
-.include "../lib/registers.asm"
-.include "../lib/portB.asm"
-.include "../lib/max7221.asm"
-.include "../lib/display.asm"
-.include "../lib/numDisp.asm"
-.include "./util/delay.asm"
+    .org 0x003E
+    .include "../lib/registers.asm"
+    .include "../lib/portb-spi.asm"
+    .include "../lib/max7221.asm"
+    .include "../lib/display.asm"
+    .include "../lib/numDisplay.asm"
+    .include "./util/delay.asm"
 
 progStart:
-    CLI
+    cli
     setupStackAndReg
     setupSpi
     setupMax7221
-    CLR highReg
-    CLR lowReg
+    clr highReg
+    clr lowReg
 
 nextNumber:
     delayLoopI 16
@@ -26,11 +26,11 @@ nextNumber:
 
     clearTextBuffer
     numDisplayLeft
-    CALL numDisplaySigned
+    call numDisplaySigned
     numDisplayRight
-    CALL numDisplayUnsigned
+    call numDisplayUnsigned
 
     displayTextBuffer
-    ADIW lhReg, 1
-    ANDI highReg, 0b0000000011 ; only for 10 bit numbers
-    RJMP nextNumber
+    adiw lhReg, 1
+    andi highReg, 0b0000000011 ; only for 10 bit numbers
+    rjmp nextNumber
