@@ -1,45 +1,45 @@
-.device ATmega324P
+    .device ATmega164P
 
-.cseg
+    .cseg
 
-.org 0x0000 ; reset vector
-    JMP progStart
+    .org 0x0000 ; reset vector
+    jmp progStart
 
-.org 0x003E
+    .org 0x003E
 
-.include "../lib/registers.asm"
-.include "../lib/portB.asm"
-.include "../lib/max7221.asm"
-.include "../lib/display.asm"
-.include "./util/delay.asm"
+    .include "../lib/registers.asm"
+    .include "../lib/portb-spi.asm"
+    .include "../lib/max7221.asm"
+    .include "../lib/display.asm"
+    .include "./util/delay.asm"
 
 testString:
-.db "0123456789-abcdefghijklmnopqrstuvwxyz  \@"
+    .db "0123456789-abcdefghijklmnopqrstuvwxyz  \@"
 
 progStart:
-    CLI
+    cli
     setupStackAndReg
     setupSpi
     setupMax7221
     clearTextBuffer
 
 stringStart:
-    LDI stringLReg, 0             ; stringReg points to character in testString
+    ldi countReg, 0               ; countReg points to character in testString
 
 displayStart:
     blink
     delayLoopI 16
-    LDI ZL, low(testString << 1)  ; get from testString in progam memory
-    LDI ZH, high(testString << 1)
-    ADD ZL, stringLReg            ; stringReg holds the current offset
-    ADC ZH, dummyZeroReg
-    LPM dispReg, Z                ; LPM requires Z register not X or Y
-    CPI dispReg, 0                ; NULL Terminator
-    BRNE notDisplayEnd
-    JMP stringStart
+    ldi ZL, low(testString << 1)  ; get from testString in program memory
+    ldi ZH, high(testString << 1)
+    add ZL, countReg              ; countReg holds the current offset
+    adc ZH, dummyZeroReg
+    lpm displayReg, Z             ; LPM requires Z register not X or Y
+    cpi displayReg, 0             ; NULL Terminator
+    brne notDisplayEnd
+    jmp stringStart
 notDisplayEnd:
-    scrollTextBuffer              ; Y now points to last char ready to recieve another one
-    ST Y, dispReg                 ; Y is last char - after shift operation
+    scrollTextBuffer              ; Y now points to last char ready to receive another one
+    st Y, displayReg              ; Y is last char - after shift operation
     displayTextBuffer
-    INC stringLReg
-    JMP displayStart              ; or display next char
+    inc countReg
+    jmp displayStart              ; or display next char
