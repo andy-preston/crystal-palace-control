@@ -259,7 +259,7 @@ chars = {
 # E C
 #  D
 
-print('    .CSEG')
+print('    .cSeg')
 print('\ncharNumeric:')
 for character in sorted(chars):
     if character == 'a':
@@ -273,4 +273,4 @@ for character in sorted(chars):
         ('1' if bars[3][0] == '|' else '0') + \
         ('1' if bars[1][0] == '|' else '0') + \
         ('1' if bars[2] == '---' else '0')
-    print('    .DB', binary, ';', character)
+    print('    .db', binary, ';', character)
