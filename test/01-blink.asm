@@ -1,23 +1,23 @@
-.device ATmega324P
+    .device ATmega164P
 
-.org 0x0000   ; reset vector
-    JMP progStart
+    .org 0x0000   ; reset vector
+    jmp progStart
 
-.org 0x003E
-.include "../lib/registers.asm"
-.include "../lib/portB.asm"
-.include "./util/delay.asm"
+    .org 0x003E
+    .include "../lib/registers.asm"
+    .include "../lib/portb-spi.asm"
+    .include "./util/delay.asm"
 
 progStart:
-    CLI
+    cli
     setupStackAndReg
     setupBlink
 seqStart:
-    LDI countReg, 0x20
+    ldi countReg, 0x20
 loop:
     blink
     delayLoopR countReg
 
-    DEC countReg
-    BRNE loop
-    RJMP seqStart
+    dec countReg
+    brne loop
+    rjmp seqStart

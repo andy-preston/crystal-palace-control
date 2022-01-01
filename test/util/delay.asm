@@ -1,21 +1,21 @@
 .macro delayLoopR
-    MOV r1, @0
+    mov r1, @0
 delay:
-    LDI quickReg, 0xFF
-    MOV r2, quickReg
+    ldi quickReg, 0xFF
+    mov r2, quickReg
 outerDelay:
-    LDI quickReg, 0xFF
-    MOV r3, quickReg
+    ldi quickReg, 0xFF
+    mov r3, quickReg
 innerDelay:
-    DEC r3
-    BRNE innerDelay
-    DEC r2
-    BRNE outerDelay
-    DEC r1
-    BRNE delay
-.endm
+    dec r3
+    brne innerDelay
+    dec r2
+    brne outerDelay
+    dec r1
+    brne delay
+.endMacro
 
 .macro delayLoopI
-    LDI quickReg, @0
+    ldi quickReg, @0
     delayLoopR quickReg
-.endm
+.endMacro
