@@ -1,81 +1,82 @@
-    .device ATmega324P
+    .device ATmega164P
 
     .org 0x0000   ; reset vector
-    JMP progStart
+    jmp progStart
 
     .org 0x003E
     .include "../lib/registers.asm"
-    .include "../lib/portB.asm"
+    .include "../lib/portb-spi.asm"
     .include "../lib/max7221.asm"
     .include "../lib/display.asm"
     .include "./util/delay.asm"
 
 getChar:
     translateCharacter
-    RET
+    ret
 
 progStart:
     setupStackAndReg
     setupSpi
+    switchOnMax7221
     setupMax7221
 
-    LDI portReg, Max7221RegisterDigit0
-    LDI dispReg, 'c' ; LDI dispReg, 0b01001110
-    CALL getChar
-    CALL max7221SetRegister
+    ldi portReg, Max7221RegisterDigit0
+    ldi displayReg, 'c' ; ldi displayReg, 0b01001110
+    call getChar
+    call max7221SetRegister
     blink
 
-    LDI portReg, Max7221RegisterDigit1
-    LDI dispReg, 'r' ; LDI dispReg, 0b00000101
-    CALL getChar
-    CALL max7221SetRegister
+    ldi portReg, Max7221RegisterDigit1
+    ldi displayReg, 'r' ; ldi displayReg, 0b00000101
+    call getChar
+    call max7221SetRegister
     blink
 
-    LDI portReg, Max7221RegisterDigit2
-    LDI dispReg, 'y' ; LDI dispReg, 0b00111011
-    CALL getChar
-    CALL max7221SetRegister
+    ldi portReg, Max7221RegisterDigit2
+    ldi displayReg, 'y' ; ldi displayReg, 0b00111011
+    call getChar
+    call max7221SetRegister
     blink
 
-    LDI portReg, Max7221RegisterDigit3
-    LDI dispReg, 's' ; LDI dispReg, 0b01011011
-    CALL getChar
-    CALL max7221SetRegister
+    ldi portReg, Max7221RegisterDigit3
+    ldi displayReg, 's' ; ldi displayReg, 0b01011011
+    call getChar
+    call max7221SetRegister
     blink
 
-    LDI portReg, Max7221RegisterDigit4
-    LDI dispReg, 't' ; LDI dispReg, 0b00001111
-    CALL getChar
-    CALL max7221SetRegister
+    ldi portReg, Max7221RegisterDigit4
+    ldi displayReg, 't' ; ldi displayReg, 0b00001111
+    call getChar
+    call max7221SetRegister
     blink
 
-    LDI portReg, Max7221RegisterDigit5
-    LDI dispReg, 'a' ; LDI dispReg, 0b01110111
-    CALL getChar
-    CALL max7221SetRegister
+    ldi portReg, Max7221RegisterDigit5
+    ldi displayReg, 'a' ; ldi displayReg, 0b01110111
+    call getChar
+    call max7221SetRegister
     blink
 
-    LDI portReg, Max7221RegisterDigit6
-    LDI dispReg, 'l' ; LDI dispReg, 0b10001110
-    CALL getChar
-    ORI dispReg, 0b10000000 ; turn decimal point on
-    CALL max7221SetRegister
+    ldi portReg, Max7221RegisterDigit6
+    ldi displayReg, 'l' ; ldi displayReg, 0b10001110
+    call getChar
+    ORI displayReg, 0b10000000 ; turn decimal point on
+    call max7221SetRegister
     blink
 
-    LDI portReg, Max7221RegisterDigit7
-    LDI dispReg, 'p' ; LDI dispReg, 0b01100111
-    CALL getChar
-    CALL max7221SetRegister
+    ldi portReg, Max7221RegisterDigit7
+    ldi displayReg, 'p' ; ldi displayReg, 0b01100111
+    call getChar
+    call max7221SetRegister
     blink
 
-    LDI countReg, 0x0F
+    ldi countReg, 0x0F
 loop:
     delayLoopI 25
     blink
 
-    LDI portReg, Max7221RegisterIntensity
-    MOV dispReg, countReg
-    CALL max7221SetRegister
+    ldi portReg, Max7221RegisterIntensity
+    mov displayReg, countReg
+    call max7221SetRegister
 
-    DEC countReg
-    RJMP loop
+    dec countReg
+    rjmp loop
