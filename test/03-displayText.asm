@@ -1,54 +1,54 @@
-.device ATmega324P
+    .device ATmega164P
 
-.cseg
+    .cseg
 
-.org 0x0000 ; reset vector
-    JMP progStart
+    .org 0x0000 ; reset vector
+    jmp progStart
 
-.org 0x003E
+    .org 0x003E
 
-.include "../lib/registers.asm"
-.include "../lib/portB.asm"
-.include "../lib/max7221.asm"
-.include "../lib/display.asm"
-.include "./util/delay.asm"
+    .include "../lib/registers.asm"
+    .include "../lib/portb-spi.asm"
+    .include "../lib/max7221.asm"
+    .include "../lib/display.asm"
+    .include "./util/delay.asm"
 
 progStart:
-    CLI
+    cli
     setupStackAndReg
     setupSpi
     setupMax7221
 
-    LDI XL, low(textBuffer)
-    LDI XH, high(textBuffer)
+    ldi XL, low(textBuffer)
+    ldi XH, high(textBuffer)
 
-    LDI dispReg, 'c'
-    ST X+, dispReg
+    ldi displayReg, 'c'
+    st X+, displayReg
 
-    LDI dispReg, 'r'
-    ST X+, dispReg
+    ldi displayReg, 'r'
+    st X+, displayReg
 
-    LDI dispReg, 'y'
-    ST X+, dispReg
+    ldi displayReg, 'y'
+    st X+, displayReg
 
-    LDI dispReg, 's'
-    ST X+, dispReg
+    ldi displayReg, 's'
+    st X+, displayReg
 
-    LDI dispReg, 't'
-    ST X+, dispReg
+    ldi displayReg, 't'
+    st X+, displayReg
 
-    LDI dispReg, 'a'
-    ST X+, dispReg
+    ldi displayReg, 'a'
+    st X+, displayReg
 
-    LDI dispReg, 'l'
-    ST X+, dispReg
+    ldi displayReg, 'l'
+    st X+, displayReg
 
-    LDI dispReg, 'p'
-    ST X+, dispReg
+    ldi displayReg, 'p'
+    st X+, displayReg
 
     displayTextBuffer
 
 waiting:
     blink
     delayLoopI 16
-    JMP waiting
+    jmp waiting
