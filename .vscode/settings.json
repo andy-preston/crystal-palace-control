@@ -1,0 +1,33 @@
+{
+    "cSpell.words": [
+        "adiw",
+        "andi",
+        "breq",
+        "brge",
+        "brne",
+        "cseg",
+        "DDRA",
+        "DDRB",
+        "DDRC",
+        "dseg",
+        "endm",
+        "MISO",
+        "MOSI",
+        "Motram",
+        "MSTR0",
+        "muxes",
+        "PINC",
+        "PORTA",
+        "PORTB",
+        "PORTC",
+        "RAMEND",
+        "rjmp",
+        "sbis",
+        "sbrs",
+        "SPCR0",
+        "SPDR0",
+        "SPIF0",
+        "SPSR0",
+        "subi"
+    ]
+}
