@@ -1,13 +1,28 @@
-    ; The digit registers are reversed on the Motram Labs board (7-0)
+    .equ motramLabsBoard=1
+    .equ andyPrestonsBoard=2
+    .equ useBoard=motramLabsBoard
+
+    .if useBoard==motramLabsBoard
+        .equ  Max7221RegisterDigit7=0x01
+        .equ  Max7221RegisterDigit6=0x02
+        .equ  Max7221RegisterDigit5=0x03
+        .equ  Max7221RegisterDigit4=0x04
+        .equ  Max7221RegisterDigit3=0x05
+        .equ  Max7221RegisterDigit2=0x06
+        .equ  Max7221RegisterDigit1=0x07
+        .equ  Max7221RegisterDigit0=0x08
+    .else
+        .equ  Max7221RegisterDigit0=0x01
+        .equ  Max7221RegisterDigit1=0x02
+        .equ  Max7221RegisterDigit2=0x03
+        .equ  Max7221RegisterDigit3=0x04
+        .equ  Max7221RegisterDigit4=0x05
+        .equ  Max7221RegisterDigit5=0x06
+        .equ  Max7221RegisterDigit6=0x07
+        .equ  Max7221RegisterDigit7=0x08
+    .endif
+
     .equ        Max7221RegisterNoop=0x00
-    .equ      Max7221RegisterDigit0=0x01
-    .equ      Max7221RegisterDigit1=0x02
-    .equ      Max7221RegisterDigit2=0x03
-    .equ      Max7221RegisterDigit3=0x04
-    .equ      Max7221RegisterDigit4=0x05
-    .equ      Max7221RegisterDigit5=0x06
-    .equ      Max7221RegisterDigit6=0x07
-    .equ      Max7221RegisterDigit7=0x08
     .equ  Max7221RegisterDecodeMode=0x09
     .equ   Max7221RegisterIntensity=0x0A
     .equ   Max7221RegisterScanLimit=0x0B

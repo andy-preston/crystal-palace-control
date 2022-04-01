@@ -70,10 +70,13 @@ displayTextLoop:
     ld displayReg, X+
     translateCharacter
     call max7221SetRegister
-    ; The Motram Labs board needs this to be a decrement
-    inc portReg
-    ; The Motram Labs board needs this to be "- 1" not "+ 1"
-    cpi portReg, (Max7221RegisterDigit7 + 1)
+    .if useBoard==motramLabsBoard
+        dec portReg
+        cpi portReg, (Max7221RegisterDigit7 - 1)
+    .else
+        inc portReg
+        cpi portReg, (Max7221RegisterDigit7 + 1)
+    .endif
     brne displayTextLoop
 .endMacro
 
