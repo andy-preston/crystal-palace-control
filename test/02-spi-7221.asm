@@ -17,7 +17,6 @@ getChar:
 progStart:
     setupStackAndReg
     setupSpi
-    switchOnMax7221
     setupMax7221
 
     ldi portReg, Max7221RegisterDigit0

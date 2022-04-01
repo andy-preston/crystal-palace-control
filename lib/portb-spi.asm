@@ -5,7 +5,6 @@
     .equ pinSS = 4
     .equ pinBlink = 4
     ; 3 & 2 - unused
-    .equ pinSwitchMax7221 = 1
     .equ pinSelectMax7221 = 0
 
 .macro blink
@@ -23,14 +22,6 @@
     cbi PORTB, pinSelectMax7221
 .endMacro
 
-.macro switchOnMax7221
-    sbi PORTB, pinSwitchMax7221
-.endMacro
-
-.macro switchOffMax7221
-    cbi PORTB, pinSwitchMax7221
-.endMacro
-
     .equ  spiDivide16 = 0b00000001 ; default spiDivide4
     .equ  spiDivide64 = 0b00000010
     .equ spiDivide128 = 0b00000011
@@ -42,7 +33,7 @@
 
 .macro setupSpi
     ; Prevent SS/Blink acting as an input or it'll force SPI into slave mode
-    ldi portReg, (1 << pinSS) | (1 << pinSelectMax7221) | (1 << pinSwitchMax7221)
+    ldi portReg, (1 << pinSS) | (1 << pinSelectMax7221)
     out DDRB, portReg
     out PORTB, portReg
 
